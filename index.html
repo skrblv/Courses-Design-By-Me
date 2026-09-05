@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en" class="is-loading">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXUS ACADEMY | Digital Design</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-bg: #EAEAEA;
+            --c-text: #0D0D0D;
+            --c-accent: #FF3300;
+            --c-border: rgba(13, 13, 13, 0.15);
+            
+            --f-display: 'Syne', sans-serif;
+            --f-body: 'Inter', sans-serif;
+            --f-mono: 'JetBrains Mono', monospace;
+            
+            --header-h: clamp(60px, 8vh, 80px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        html.is-loading { overflow: hidden; }
+
+        body {
+            background-color: var(--c-bg);
+            color: var(--c-text);
+            font-family: var(--f-body);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            overscroll-behavior: none;
+        }
+
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button { cursor: none; }
+        }
+        ::selection { background: var(--c-text); color: var(--c-bg); }
+        a { text-decoration: none; color: inherit; }
+        img, video { display: block; width: 100%; height: auto; object-fit: cover; }
+        button { border: none; background: none; font-family: inherit; }
+        .preloader {
+            position: fixed; inset: 0;
+            background: var(--c-text); color: var(--c-bg);
+            z-index: 999999; display: flex; flex-direction: column;
+            justify-content: space-between; padding: clamp(1rem, 3vw, 3rem);
+            pointer-events: none;
+        }
+        .loader-matrix {
+            font-family: var(--f-mono); font-size: clamp(0.7rem, 1vw, 1rem);
+            line-height: 1.5; opacity: 0.6;
+        }
+        .loader-bottom {
+            display: flex; justify-content: space-between; align-items: flex-end;
+        }
+        .loader-perc {
+            font-family: var(--f-display); font-weight: 800;
+            font-size: clamp(4rem, 12vw, 15rem); line-height: 0.8;
+            letter-spacing: -0.05em; margin-bottom: -1vw;
+        }
+        .loader-bar {
+            position: absolute; bottom: 0; left: 0; height: 4px;
+            background: var(--c-bg); width: 0%;
+        }
+        #noise-canvas {
+            position: fixed; inset: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 99990; opacity: 0.05; mix-blend-mode: multiply;
+            transform: translateZ(0); /* Hardware Acceleration */
+        }
+        @media (max-width: 768px) { #noise-canvas { display: none; } }
+
+        .cursor-dot, .cursor-ring {
+            position: fixed; top: 0; left: 0; pointer-events: none;
+            border-radius: 50%; z-index: 100000; transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+        }
+        .cursor-dot { width: 6px; height: 6px; background-color: var(--c-text); }
+        .cursor-ring {
+            width: 36px; height: 36px; border: 1px solid var(--c-text);
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+        }
+        .cursor-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: var(--f-mono); font-size: 9px; font-weight: 700; color: var(--c-bg);
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        body.hover-active .cursor-ring { width: 70px; height: 70px; background-color: var(--c-text); mix-blend-mode: difference; }
+        body.hover-active .cursor-dot { opacity: 0; }
+        body.hover-drag .cursor-ring { width: 90px; height: 90px; background-color: var(--c-text); mix-blend-mode: normal; }
+        body.hover-drag .cursor-text { opacity: 1; }
+
+        @media (pointer: coarse) { .cursor-dot, .cursor-ring { display: none !important; } }
+        .t-display { font-family: var(--f-display); text-transform: uppercase; font-weight: 800; line-height: 0.85; letter-spacing: -0.04em; }
+        .t-mono { font-family: var(--f-mono); text-transform: uppercase; font-size: clamp(0.7rem, 1vw, 0.85rem); letter-spacing: 0.05em; font-weight: 700; opacity: 0.8; }
+        .t-body { font-family: var(--f-body); font-size: clamp(1rem, 1.2vw, 1.25rem); line-height: 1.4; font-weight: 500; }
+        
+        .text-max { font-size: clamp(3rem, 14vw, 18rem); letter-spacing: -0.05em; }
+        .text-huge { font-size: clamp(2.5rem, 8vw, 10rem); }
+        .text-lg { font-size: clamp(2rem, 5vw, 6rem); }
+        .text-md { font-size: clamp(1.2rem, 2.5vw, 3rem); line-height: 0.9; }
+
+        .grid { display: grid; grid-template-columns: repeat(12, 1fr); position: relative; }
+        .br { border-right: 1px solid var(--c-border); }
+        .bb { border-bottom: 1px solid var(--c-border); }
+        .bt { border-top: 1px solid var(--c-border); }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+        .col-3 { grid-column: span 3; }
+        .col-2 { grid-column: span 2; }
+
+        .p-xl { padding: clamp(2rem, 6vw, 8rem); }
+        .p-lg { padding: clamp(1.5rem, 4vw, 6rem); }
+        .p-md { padding: clamp(1.2rem, 3vw, 4rem); }
+
+        .flex-center { display: flex; align-items: center; justify-content: center; text-align: center; }
+        .flex-between { display: flex; align-items: center; justify-content: space-between; }
+        .flex-col { display: flex; flex-direction: column; }
+
+        @media (max-width: 1024px) {
+            .tablet-col-12 { grid-column: span 12; }
+            .tablet-br-none { border-right: none; }
+            .tablet-bb { border-bottom: 1px solid var(--c-border); }
+        }
+        .split-line { overflow: hidden; display: block; }
+        .split-word { display: inline-block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+        .split-char { display: inline-block; will-change: transform; }
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h);
+            z-index: 9000; border-bottom: 1px solid var(--c-border);
+            background: rgba(234, 234, 234, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .header.hidden { transform: translateY(-100%); }
+        .nav-link { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: color 0.3s; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: var(--c-text); transition: height 0.4s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1; }
+        .nav-link:hover { color: var(--c-bg); }
+        .nav-link:hover::after { height: 100%; }
+
+        .btn-magnetic {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: transparent; position: relative; overflow: hidden; border-radius: 50%;
+            width: clamp(100px, 12vw, 160px); height: clamp(100px, 12vw, 160px);
+            border: 1px solid var(--c-text); text-align: center; transition: color 0.3s;
+            cursor: pointer; flex-shrink: 0;
+        }
+        .btn-magnetic .text { position: relative; z-index: 2; font-family: var(--f-display); font-size: clamp(0.9rem, 1vw, 1.2rem); text-transform: uppercase; font-weight: 700; pointer-events: none;}
+        .btn-magnetic::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: var(--c-text); transition: top 0.4s ease; z-index: 1; border-radius: 50%;
+        }
+        @media (hover: hover) {
+            .btn-magnetic:hover::before { top: 0; border-radius: 0; }
+            .btn-magnetic:hover { color: var(--c-bg); }
+        }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; padding-top: var(--header-h); position: relative;}
+        .hero-title-wrap { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 2vw; z-index: 2; mix-blend-mode: difference; color: #fff; pointer-events: none;}
+        
+        .hero-img-mask {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh; z-index: 1; overflow: hidden;
+            clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); 
+            will-change: clip-path;
+        }
+        .hero-img-mask img { transform: scale(1.4); will-change: transform; height: 100vh;}
+
+        @media (max-width: 768px) {
+            .hero-title-wrap { mix-blend-mode: normal; color: var(--c-text); }
+            .hero-img-mask { opacity: 0.15; }
+        }
+
+        .marquee { overflow: hidden; white-space: nowrap; display: flex; border-bottom: 1px solid var(--c-border); background: var(--c-text); color: var(--c-bg); padding: 1rem 0; transform: translateZ(0); }
+        .marquee-inner { display: flex; animation: marquee 20s linear infinite; will-change: transform; }
+        .marquee-item { margin-right: 3rem; font-family: var(--f-display); font-weight: 700; font-size: clamp(1.2rem, 2vw, 2rem); text-transform: uppercase; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .manifesto { min-height: 120vh; display: flex; align-items: center; justify-content: center; background: var(--c-text); color: var(--c-bg); border-bottom: 1px solid var(--c-border); padding: 5rem 0;}
+        .manifesto-text { width: 90%; text-align: center; }
+        .manifesto-text .split-char { opacity: 0.1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.15); }
+        .programs-wrapper { border-bottom: 1px solid var(--c-border); background: var(--c-bg); overflow: hidden; }
+        .horizontal-container { display: flex; width: 300vw; height: 100vh; }
+        .h-panel { display: flex; width: 100vw; height: 100vh; border-right: 1px solid var(--c-border); flex-shrink: 0;}
+        .p-left { width: 40%; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--c-border); }
+        .p-right { width: 60%; position: relative; overflow: hidden; }
+        .p-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 0.5s; will-change: transform;}
+        .h-panel:hover .p-img { filter: grayscale(0); }
+        @media (max-width: 1024px) {
+            .horizontal-container { width: 100%; height: auto; flex-direction: column; }
+            .h-panel { width: 100%; height: auto; flex-direction: column; border-right: none; border-bottom: 1px solid var(--c-border); }
+            .p-left { width: 100%; border-right: none; border-bottom: 1px solid var(--c-border); min-height: 40vh;}
+            .p-right { width: 100%; height: 50vh; }
+        }
+        .mentors { border-bottom: 1px solid var(--c-border); position: relative; }
+        .mentor-row { border-top: 1px solid var(--c-border); padding: clamp(2rem, 4vw, 4rem) 2vw; position: relative; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
+        .mentor-row:first-child { border-top: none; }
+        .mentor-row:hover { background: rgba(13, 13, 13, 0.04); }
+        
+        .hover-reveal {
+            position: fixed; top: 0; left: 0; width: 280px; height: 380px;
+            pointer-events: none; z-index: 100; opacity: 0; transform: scale(0.8) translate(-50%, -50%);
+            overflow: hidden; will-change: transform, opacity;
+        }
+        body.show-reveal .hover-reveal { opacity: 1; transform: scale(1) translate(-50%, -50%); transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1), transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        @media (pointer: coarse) { .hover-reveal { display: none !important; } }
+        .footer { background: var(--c-text); color: var(--c-bg); overflow: hidden; }
+        .footer .br, .footer .bb { border-color: rgba(255,255,255,0.15); }
+        .f-logo-wrap { padding-top: 5vh; text-align: center; }
+        .footer-logo { font-size: 17vw; line-height: 0.75; letter-spacing: -0.06em; margin-bottom: -2vw;}
+        
+        input[type="email"] { width: 100%; padding: 1.5rem 0; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); outline: none; font-family: var(--f-mono); color: var(--c-bg); transition: border-color 0.3s; font-size: 1rem;}
+        input[type="email"]:focus { border-color: var(--c-bg); }
+        input[type="email"]::placeholder { color: rgba(255,255,255,0.3); }
+
+    </style>
+</head>
+<body>
+    <canvas id="noise-canvas"></canvas>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"><span class="cursor-text">EXPLORE</span></div>
+    <div class="preloader">
+        <div class="loader-matrix t-mono">
+            SYS.INIT // CORE.SYS V.9.0.4<br>
+            LOADING DEPENDENCIES...<br>
+            AESTHETICS: BRUTAL<br>
+            LOGIC: REWIRED
+        </div>
+        <div class="loader-bottom">
+            <div class="t-mono" style="padding-bottom: 2vw;">INITIALIZING</div>
+            <div class="t-display loader-perc">000</div>
+        </div>
+        <div class="loader-bar"></div>
+    </div>
+    <header class="header grid">
+        <div class="col-2 tablet-col-6 br tablet-br-none mobile-bb flex-center" style="justify-content: flex-start; padding-left: 2vw;">
+            <span class="t-display" style="font-size: 1.5rem;">NEXUS</span>
+        </div>
+        <nav class="col-8 desktop-nav br grid" style="border-bottom: none; grid-template-columns: repeat(3, 1fr);" id="desktop-nav">
+            <a href="#programs" class="col-4 br flex-center t-display text-body nav-link hover-target">Programs</a>
+            <a href="#mentors" class="col-4 br flex-center t-display text-body nav-link hover-target">Mentors</a>
+            <a href="#footer" class="col-4 flex-center t-display text-body nav-link hover-target">Contact</a>
+        </nav>
+        <div class="col-2 tablet-col-6 flex-center hover-target" id="header-cta" style="border-left: 1px solid var(--c-border);">
+            <span class="t-mono scramble-hover" data-text="APPLY_NOW">APPLY_NOW</span>
+        </div>
+    </header>
+    <style>@media (max-width: 1024px) { #desktop-nav { display: none !important; } #header-cta { border-left: none; } }</style>
+    <main>
+        <section class="hero bb">
+            <div class="hero-img-mask" id="hero-mask">
+                <picture>
+                    <source srcset="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop&fm=webp" type="image/webp">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" alt="Brutalist Architecture" id="hero-img" crossorigin="anonymous">
+                </picture>
+            </div>
+            <div class="hero-title-wrap">
+                <h1 class="t-display text-max hero-title gs-reveal" style="text-align: left; margin-left: -1vw;">
+                    <div class="split-line">WE DON'T</div>
+                </h1>
+                <h1 class="t-display text-max hero-title gs-reveal" style="text-align: right; margin-right: -1vw;">
+                    <div class="split-line">TEACH.</div>
+                </h1>
+                <h1 class="t-display text-max hero-title gs-reveal" style="text-align: left; margin-left: -1vw; color: var(--c-accent);">
+                    <div class="split-line">WE REWIRE.</div>
+                </h1>
+            </div>
+
+            <div class="grid bt" style="height: auto; background: var(--c-bg);">
+                <div class="col-4 tablet-col-12 br tablet-br-none tablet-bb p-md flex-center">
+                    <span class="t-mono text-center">BASED IN CYBERSPACE<br>CREATED FOR EVERYONE</span>
+                </div>
+                <div class="col-4 tablet-col-12 br tablet-br-none tablet-bb p-md flex-center">
+                    <span class="t-mono text-center scramble-hover" data-text="SCROLL TO INITIATE">SCROLL TO INITIATE</span>
+                </div>
+                <div class="col-4 tablet-col-12 p-md flex-center">
+                    <button class="btn-magnetic hover-target" aria-label="Apply Now">
+                        <span class="text">APPLY<br>2024</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section class="marquee" aria-hidden="true">
+            <div class="marquee-inner">
+                <div class="marquee-item">ALUMNI HIRED AT:</div><div class="marquee-item">MEDIA.MONKS</div><div class="marquee-item">AKQA</div><div class="marquee-item">STUDIO FREIGHT</div><div class="marquee-item">RESN</div><div class="marquee-item">UNIT9</div>
+                <div class="marquee-item">ALUMNI HIRED AT:</div><div class="marquee-item">MEDIA.MONKS</div><div class="marquee-item">AKQA</div><div class="marquee-item">STUDIO FREIGHT</div><div class="marquee-item">RESN</div><div class="marquee-item">UNIT9</div>
+            </div>
+        </section>
+        <section class="manifesto">
+            <h2 class="t-display text-huge manifesto-text split-text-target">
+                TRADITIONAL EDUCATION IS DEAD. THE INTERNET REWARDS THE BOLD, THE FAST, AND THE UNCONVENTIONAL. WE ARE BUILDING THE NEXT GENERATION OF DIGITAL ARCHITECTS.
+            </h2>
+        </section>
+        <section id="programs" class="programs-wrapper">
+            <div class="horizontal-container">
+                <article class="h-panel panel-slide">
+                    <div class="p-left p-xl">
+                        <div class="flex-between">
+                            <span class="t-mono">PROGRAM // 01</span>
+                            <span class="t-mono">12 WEEKS</span>
+                        </div>
+                        <div>
+                            <div class="t-display text-lg" style="opacity: 0.2; line-height: 1;">01</div>
+                            <h3 class="t-display text-lg mt-4">EDITORIAL<br>FRONTEND</h3>
+                            <p class="t-body" style="margin-top: 2rem;">Master grid systems, fluid typography, and semantic structure. We build layouts that belong in Vogue, not in templates.</p>
+                        </div>
+                        <div class="t-mono bt" style="padding-top: 1rem;">STACK: HTML/CSS, SCSS, JS, TAILWIND</div>
+                    </div>
+                    <div class="p-right hover-target">
+                        <picture>
+                            <source srcset="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1600&auto=format&fit=crop&fm=webp" type="image/webp">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1600&auto=format&fit=crop" class="p-img p-parallax" alt="Frontend" loading="lazy">
+                        </picture>
+                    </div>
+                </article>
+
+                <article class="h-panel panel-slide">
+                    <div class="p-left p-xl">
+                        <div class="flex-between">
+                            <span class="t-mono">PROGRAM // 02</span>
+                            <span class="t-mono">10 WEEKS</span>
+                        </div>
+                        <div>
+                            <div class="t-display text-lg" style="opacity: 0.2; line-height: 1;">02</div>
+                            <h3 class="t-display text-lg mt-4">MOTION &<br>PHYSICS</h3>
+                            <p class="t-body" style="margin-top: 2rem;">Breathe life into the DOM. Complex timelines, scroll-driven typography, and LERP-based micro-interactions.</p>
+                        </div>
+                        <div class="t-mono bt" style="padding-top: 1rem;">STACK: GSAP, LENIS, MATH, CANVAS</div>
+                    </div>
+                    <div class="p-right hover-target">
+                        <picture>
+                            <source srcset="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1600&auto=format&fit=crop&fm=webp" type="image/webp">
+                            <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1600&auto=format&fit=crop" class="p-img p-parallax" alt="Motion" loading="lazy">
+                        </picture>
+                    </div>
+                </article>
+
+                <article class="h-panel panel-slide">
+                    <div class="p-left p-xl">
+                        <div class="flex-between">
+                            <span class="t-mono">PROGRAM // 03</span>
+                            <span class="t-mono">14 WEEKS</span>
+                        </div>
+                        <div>
+                            <div class="t-display text-lg" style="opacity: 0.2; line-height: 1;">03</div>
+                            <h3 class="t-display text-lg mt-4">WEBGL &<br>SHADERS</h3>
+                            <p class="t-body" style="margin-top: 2rem;">The final frontier. Procedural generation, custom GLSL fragment shaders, and interactive 3D environments.</p>
+                        </div>
+                        <div class="t-mono bt" style="padding-top: 1rem;">STACK: THREE.JS, GLSL, R3F, WEBGL</div>
+                    </div>
+                    <div class="p-right hover-target">
+                        <picture>
+                            <source srcset="https://images.unsplash.com/photo-1633647517075-3bdaf92222fb?q=80&w=1600&auto=format&fit=crop&fm=webp" type="image/webp">
+                            <img src="https://images.unsplash.com/photo-1633647517075-3bdaf92222fb?q=80&w=1600&auto=format&fit=crop" class="p-img p-parallax" alt="WebGL" loading="lazy">
+                        </picture>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="mentors" class="mentors">
+            <div class="hover-reveal">
+                <img src="" alt="Mentor" id="reveal-img">
+            </div>
+
+            <div class="grid bb">
+                <div class="col-12 p-md">
+                    <p class="t-mono mb-2">// 003 — MENTORS</p>
+                    <h2 class="t-display text-lg">THE ARCHITECTS</h2>
+                </div>
+            </div>
+
+            <div class="mentor-row hover-target" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop">
+                <h3 class="t-display text-md">ALEX CHEN</h3>
+                <span class="t-mono">CREATIVE DEV @ MEDIA.MONKS</span>
+            </div>
+            <div class="mentor-row hover-target" data-img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop">
+                <h3 class="t-display text-md">SARAH JONES</h3>
+                <span class="t-mono">WEBGL ARTIST & AWWWARDS JURY</span>
+            </div>
+            <div class="mentor-row hover-target" data-img="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=600&auto=format&fit=crop">
+                <h3 class="t-display text-md">DAVID KOCH</h3>
+                <span class="t-mono">LEAD DESIGNER @ STUDIO FREIGHT</span>
+            </div>
+        </section>
+    </main>
+    <footer id="footer" class="footer">
+        <div class="grid bb">
+            <div class="col-8 tablet-col-12 br tablet-br-none tablet-bb p-xl flex-col" style="justify-content: space-between;">
+                <h2 class="t-display text-lg">READY TO BREAK<br>THE INTERNET?</h2>
+                <div style="margin-top: 4rem;">
+                    <button class="btn-magnetic hover-target" style="border-color: var(--c-bg); color: var(--c-bg);" aria-label="Apply Now">
+                        <span class="text">APPLY NOW</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-4 tablet-col-12 p-lg flex-col" style="justify-content: space-between;">
+                <div>
+                    <p class="t-mono mb-2" style="opacity: 0.5;">NEWSLETTER</p>
+                    <form onsubmit="event.preventDefault();">
+                        <input type="email" placeholder="ENTER E-MAIL" aria-label="Email" required class="hover-target">
+                    </form>
+                </div>
+                <div style="margin-top: 4rem;">
+                    <p class="t-mono mb-2" style="opacity: 0.5;">LOCATION</p>
+                    <p class="t-body">127 Matrix Blvd<br>Neo-Tokyo, JP</p>
+                </div>
+            </div>
+        </div>
+        <div class="f-logo-wrap">
+            <div class="t-display footer-logo gs-footer">
+                NEXUS
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
+    <script>
+        const isTouch = window.matchMedia("(pointer: coarse)").matches;
+        const isMobile = window.innerWidth <= 1024;
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function splitText(selector) {
+            document.querySelectorAll(selector).forEach(el => {
+                const text = el.innerText.trim();
+                el.innerHTML = '';
+                text.split(' ').forEach(word => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.className = 'split-word';
+                    word.split('').forEach(char => {
+                        const charSpan = document.createElement('span');
+                        charSpan.className = 'split-char';
+                        charSpan.innerText = char;
+                        wordDiv.appendChild(charSpan);
+                    });
+                    el.appendChild(wordDiv);
+                    el.appendChild(document.createTextNode(' '));
+                });
+            });
+        }
+
+        class Scrambler {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#_01';
+                this.update = this.update.bind(this);
+            }
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            update() {
+                let output = '';
+                let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.queue[i].char = char;
+                        }
+                        output += `<span style="opacity:0.5">${char}</span>`;
+                    } else {
+                        output += from;
+                    }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+        }
+
+        function initPreloader() {
+            const preloader = document.querySelector('.preloader');
+            const counter = document.querySelector('.loader-perc');
+            const bar = document.querySelector('.loader-bar');
+            let progress = 0;
+
+            const removePreloader = () => {
+                document.documentElement.classList.remove('is-loading');
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(preloader, {
+                        yPercent: -100,
+                        duration: 1.2,
+                        ease: "power4.inOut",
+                        onComplete: () => {
+                            preloader.style.display = 'none';
+                            initApp();
+                        }
+                    });
+                } else {
+                    // Ultimate fallback
+                    preloader.style.display = 'none';
+                }
+            };
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    removePreloader();
+                }
+                if (counter) counter.innerText = progress.toString().padStart(3, '0');
+                if (bar) bar.style.width = progress + '%';
+            }, 50);
+
+            setTimeout(() => {
+                if (progress < 100) {
+                    clearInterval(interval);
+                    removePreloader();
+                }
+            }, 3000);
+        }
+
+        function initApp() {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                console.error("Animation libraries failed to load.");
+                return;
+            }
+
+            try {
+                if (typeof Lenis !== 'undefined') {
+                    const lenis = new Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        direction: 'vertical',
+                        smooth: !prefersReducedMotion,
+                        touchMultiplier: 2
+                    });
+                    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+                    requestAnimationFrame(raf);
+                    
+                    lenis.on('scroll', ScrollTrigger.update);
+                    gsap.ticker.add((time) => lenis.raf(time * 1000));
+                    gsap.ticker.lagSmoothing(0);
+
+                    let lastScroll = 0;
+                    lenis.on('scroll', ({ scroll }) => {
+                        const header = document.querySelector('.header');
+                        if (header) {
+                            if (scroll > lastScroll && scroll > 100) {
+                                header.classList.add('header-hide');
+                            } else {
+                                header.classList.remove('header-hide');
+                            }
+                        }
+                        lastScroll = scroll;
+                    });
+                }
+
+                splitText('.gs-reveal');
+                splitText('.split-text-target');
+                splitText('.gs-footer');
+
+                // C. Hero Intro Sequence
+                const tl = gsap.timeline();
+                tl.to('#hero-mask', {
+                    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                    width: isMobile ? "100vw" : "85vw",
+                    height: isMobile ? "100vh" : "75vh",
+                    duration: 1.5,
+                    ease: "power4.inOut"
+                }, 0)
+                .to('#hero-img', { scale: 1, duration: 1.5, ease: "power4.inOut" }, 0)
+                .fromTo('.gs-reveal .split-char', 
+                    { y: '100%' },
+                    { y: '0%', duration: 1, stagger: 0.02, ease: "power4.out" }, 0.5
+                );
+
+                // D. Hero Image Parallax
+                gsap.to('#hero-img', {
+                    yPercent: 15, ease: "none",
+                    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+                });
+
+                // E. Scramble Hovers
+                document.querySelectorAll('.scramble-hover').forEach(el => {
+                    const fx = new Scrambler(el);
+                    const originalText = el.getAttribute('data-text') || el.innerText;
+                    el.addEventListener('mouseenter', () => fx.setText(originalText));
+                });
+
+                // F. Manifesto Text Fill
+                const manifestoChars = document.querySelectorAll('.split-text-target .split-char');
+                if (manifestoChars.length > 0) {
+                    gsap.to(manifestoChars, {
+                        color: "var(--c-bg)",
+                        opacity: 1,
+                        webkitTextStroke: "0px rgba(255,255,255,0)",
+                        stagger: 0.1,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: ".manifesto",
+                            start: "top 70%",
+                            end: "bottom 70%",
+                            scrub: 1
+                        }
+                    });
+                }
+
+                // G. Horizontal Scroll (GSAP MatchMedia)
+                let mm = gsap.matchMedia();
+                mm.add("(min-width: 1025px)", () => {
+                    const hContainer = document.querySelector('.horizontal-container');
+                    const panels = gsap.utils.toArray('.panel-slide');
+                    
+                    if (hContainer && panels.length > 0) {
+                        gsap.to(panels, {
+                            xPercent: -100 * (panels.length - 1),
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: ".programs-wrapper",
+                                pin: true,
+                                scrub: 1,
+                                snap: 1 / (panels.length - 1),
+                                end: () => "+=" + hContainer.offsetWidth
+                            }
+                        });
+
+                        // Inner Parallax
+                        panels.forEach(panel => {
+                            const img = panel.querySelector('.p-parallax');
+                            if(img) {
+                                gsap.to(img, {
+                                    xPercent: 15, ease: "none",
+                                    scrollTrigger: {
+                                        trigger: panel,
+                                        containerAnimation: ScrollTrigger.getById(hContainer),
+                                        start: "left right",
+                                        end: "right left",
+                                        scrub: true
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                // H. Footer Text Reveal
+                const footerChars = document.querySelectorAll('.gs-footer .split-char');
+                if (footerChars.length > 0) {
+                    gsap.fromTo(footerChars, 
+                        { y: '100%' },
+                        { y: '0%', duration: 1.5, stagger: 0.05, ease: "power4.out",
+                          scrollTrigger: { trigger: ".footer", start: "top 80%" }
+                        }
+                    );
+                }
+
+                // I. Hardware Accelerated Noise & Cursor (Desktop Only)
+                if (!isTouch && !prefersReducedMotion) {
+                    initHardwareAcceleratedCanvas();
+                    initMagneticCursor();
+                }
+
+            } catch (err) {
+                console.error("Animation Execution Error:", err);
+            }
+        }
+
+        // 3. Hardware Accelerated Noise (Optimized)
+        function initHardwareAcceleratedCanvas() {
+            const canvas = document.getElementById('noise-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d', { alpha: false });
+            
+            const pSize = 256;
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = pSize; pCanvas.height = pSize;
+            const pCtx = pCanvas.getContext('2d');
+            
+            const imgData = pCtx.createImageData(pSize, pSize);
+            const buf32 = new Uint32Array(imgData.data.buffer);
+            for (let i = 0; i < buf32.length; i++) {
+                buf32[i] = Math.random() < 0.5 ? 0xff000000 : 0xffffffff;
+            }
+            pCtx.putImageData(imgData, 0, 0);
+            
+            const drawNoise = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = ctx.createPattern(pCanvas, 'repeat');
+                ctx.save();
+                ctx.translate(Math.random() * pSize, Math.random() * pSize);
+                ctx.fillRect(-pSize, -pSize, canvas.width + pSize*2, canvas.height + pSize*2);
+                ctx.restore();
+                requestAnimationFrame(drawNoise);
+            };
+
+            let rt;
+            window.addEventListener('resize', () => {
+                clearTimeout(rt);
+                rt = setTimeout(() => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }, 200);
+            }, { passive: true });
+            
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            requestAnimationFrame(drawNoise);
+        }
+
+        // 4. Magnetic Cursor & Image Reveal
+        function initMagneticCursor() {
+            const dot = document.querySelector('.cursor-dot');
+            const ring = document.querySelector('.cursor-ring');
+            if (!dot || !ring) return;
+
+            let mX = window.innerWidth / 2, mY = window.innerHeight / 2;
+            let rX = mX, rY = mY;
+
+            window.addEventListener('mousemove', (e) => {
+                mX = e.clientX; mY = e.clientY;
+                dot.style.transform = `translate3d(calc(${mX}px - 50%), calc(${mY}px - 50%), 0)`;
+            }, { passive: true });
+
+            const renderCursor = () => {
+                rX += (mX - rX) * 0.15; rY += (mY - rY) * 0.15;
+                ring.style.transform = `translate3d(calc(${rX}px - 50%), calc(${rY}px - 50%), 0)`;
+                requestAnimationFrame(renderCursor);
+            };
+            requestAnimationFrame(renderCursor);
+
+            // Hover Globals
+            document.querySelectorAll('.hover-target, a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+            });
+
+            // Magnetic Buttons
+            document.querySelectorAll('.btn-magnetic').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const h = rect.width / 2;
+                    gsap.to(btn, { 
+                        x: (e.clientX - rect.left - h) * 0.3, 
+                        y: (e.clientY - rect.top - h) * 0.3, 
+                        duration: 0.4, ease: "power2.out" 
+                    });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+                });
+                btn.addEventListener('mouseenter', () => document.body.classList.add('hover-drag'));
+                btn.addEventListener('mouseleave', () => document.body.classList.remove('hover-drag'));
+            });
+
+            // Image Reveal on Mentors
+            const revealContainer = document.querySelector('.hover-reveal');
+            const revealImg = document.getElementById('reveal-img');
+            
+            if (revealContainer && revealImg) {
+                document.querySelectorAll('.mentor-row').forEach(row => {
+                    row.addEventListener('mouseenter', () => {
+                        revealImg.src = row.getAttribute('data-img');
+                        document.body.classList.add('show-reveal');
+                    });
+                    row.addEventListener('mousemove', (e) => {
+                        gsap.to(revealContainer, { x: e.clientX, y: e.clientY, duration: 0.6, ease: "power3.out" });
+                        gsap.to(revealImg, { 
+                            xPercent: (e.clientX / window.innerWidth - 0.5) * 30, 
+                            yPercent: (e.clientY / window.innerHeight - 0.5) * 30, 
+                            duration: 0.6, ease: "power3.out" 
+                        });
+                    });
+                    row.addEventListener('mouseleave', () => document.body.classList.remove('show-reveal'));
+                });
+            }
+        }
+
+        // START EXECUTION
+        initPreloader();
+    </script>
+</body>
+</html>
