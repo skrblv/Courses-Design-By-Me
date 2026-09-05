@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en" class="is-loading">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NEXUS — Digital Design &amp; Engineering Academy</title>
+<meta name="description" content="NEXUS is a digital design and engineering academy. Twelve to sixteen week studios in frontend craft, motion, and WebGL, taught by working practitioners.">
+<meta name="theme-color" content="#ECECE6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230D0D0D'/%3E%3Cpath d='M28 74V26h9.6l24.8 33.6V26H72v48h-9.6L37.6 40.4V74Z' fill='%23ECECE6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#ECECE6;
+--ink:#0D0D0D;
+--ink-70:rgba(13,13,13,.7);
+--ink-50:rgba(13,13,13,.5);
+--ink-30:rgba(13,13,13,.3);
+--paper:#F6F5F0;
+--accent:#FF3300;
+--line:rgba(13,13,13,.14);
+--line-strong:rgba(13,13,13,.28);
+--header-h:clamp(64px,9vh,88px);
+--f-display:'Syne',sans-serif;
+--f-body:'Inter',sans-serif;
+--f-mono:'JetBrains Mono',monospace;
+--ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+--ease-out-quart:cubic-bezier(0.25,1,0.5,1);
+--ease-in-out-quart:cubic-bezier(0.76,0,0.24,1);
+--container:clamp(1.25rem,4vw,3rem);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.lenis{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto}
+.lenis.lenis-stopped{overflow:hidden}
+html.is-loading,html.menu-open{overflow:hidden}
+body{
+background:var(--bg);
+color:var(--ink);
+font-family:var(--f-body);
+font-size:16px;
+line-height:1.5;
+-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility;
+overflow-x:clip;
+overscroll-behavior-y:none;
+}
+@media (pointer:fine){
+body.js-cursor,body.js-cursor a,body.js-cursor button{cursor:none}
+}
+::selection{background:var(--ink);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%;height:auto}
+button,input{font-family:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+ul{list-style:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.skip-link{
+position:fixed;top:-100%;left:1rem;z-index:100001;
+background:var(--ink);color:var(--bg);padding:.9rem 1.4rem;
+font-family:var(--f-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;
+transition:top .25s var(--ease-out-quart);
+}
+.skip-link:focus{top:1rem}
+.t-display{font-family:var(--f-display);font-weight:800;text-transform:uppercase;line-height:.92;letter-spacing:-.02em}
+.t-mono{font-family:var(--f-mono);font-weight:600;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
+.t-body{font-family:var(--f-body);font-weight:400}
+.text-cinema{font-size:clamp(3.4rem,15vw,13rem);letter-spacing:-.03em}
+.text-xl{font-size:clamp(2.6rem,8.2vw,7.2rem);letter-spacing:-.025em}
+.text-lg{font-size:clamp(2rem,5vw,4.4rem);letter-spacing:-.02em}
+.text-md{font-size:clamp(1.5rem,3vw,2.4rem);letter-spacing:-.01em}
+.eyebrow{display:flex;align-items:center;gap:.6em;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-70)}
+.eyebrow::before{content:'';width:.5em;height:.5em;background:var(--accent);flex:none}
+.btn{
+font-family:var(--f-mono);font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+display:inline-flex;align-items:center;gap:.7em;padding:1rem 1.6rem;
+border:1px solid var(--ink);background:transparent;position:relative;overflow:hidden;
+}
+.btn span{position:relative;z-index:2;transition:color .4s var(--ease-out-quart)}
+.btn::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .45s var(--ease-in-out-quart);z-index:1}
+.btn:hover::before{transform:translateY(0)}
+.btn:hover span{color:var(--bg)}
+.btn-fill{background:var(--ink);color:var(--bg)}
+.btn-fill::before{background:var(--accent)}
+.btn-fill:hover span{color:var(--bg)}
+.btn-circle{
+width:clamp(108px,11vw,152px);height:clamp(108px,11vw,152px);border-radius:50%;
+border:1px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;text-align:center;
+position:relative;overflow:hidden;flex:none;
+}
+.btn-circle::before{content:'';position:absolute;inset:0;background:var(--ink);border-radius:50%;transform:scale(0);transition:transform .5s var(--ease-out-expo)}
+.btn-circle:hover::before{transform:scale(1)}
+.btn-circle .btn-circle-label{position:relative;z-index:2;font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:clamp(.8rem,1vw,1.05rem);line-height:1.15;transition:color .35s var(--ease-out-quart)}
+.btn-circle:hover .btn-circle-label{color:var(--bg)}
+#noise-canvas{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9998;opacity:.045;mix-blend-mode:multiply}
+@media (max-width:900px),(pointer:coarse){#noise-canvas{display:none}}
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;border-radius:50%;z-index:100002;will-change:transform}
+.cursor-dot{width:7px;height:7px;background:var(--ink);transform:translate3d(-50%,-50%,0)}
+.cursor-ring{width:38px;height:38px;border:1px solid var(--ink);transform:translate3d(-50%,-50%,0);transition:width .3s var(--ease-out-quart),height .3s var(--ease-out-quart),background-color .3s ease,border-color .3s ease}
+.cursor-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--f-mono);font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--bg);opacity:0;transition:opacity .25s ease;white-space:nowrap}
+body.cur-hover .cursor-ring{width:64px;height:64px;background:var(--ink);mix-blend-mode:difference}
+body.cur-hover .cursor-dot{opacity:0}
+body.cur-drag .cursor-ring{width:96px;height:96px;background:var(--accent);border-color:var(--accent);mix-blend-mode:normal}
+body.cur-drag .cursor-label{opacity:1}
+@media (pointer:coarse){.cursor-dot,.cursor-ring{display:none!important}}
+.preloader{
+position:fixed;inset:0;z-index:100000;background:var(--ink);color:var(--bg);
+display:flex;flex-direction:column;justify-content:space-between;
+padding:clamp(1.25rem,3.5vw,3rem);
+}
+.pre-top{display:flex;justify-content:space-between;align-items:flex-start;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em}
+.pre-top div:last-child{text-align:right}
+.pre-log{font-family:var(--f-mono);font-size:clamp(.65rem,1vw,.85rem);line-height:1.7;opacity:.55;max-width:26em}
+.pre-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem}
+.pre-count{font-family:var(--f-display);font-weight:800;font-size:clamp(4.5rem,15vw,13rem);line-height:.78;letter-spacing:-.04em}
+.pre-status{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;padding-bottom:.6em;opacity:.7}
+.pre-bar-track{position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(236,236,230,.15)}
+.pre-bar{position:absolute;bottom:0;left:0;height:100%;width:0%;background:var(--accent)}
+.header{
+position:fixed;top:0;left:0;width:100%;height:var(--header-h);z-index:9000;
+display:flex;align-items:center;justify-content:space-between;
+padding-inline:var(--container);
+border-bottom:1px solid transparent;
+transition:transform .55s var(--ease-in-out-quart),background-color .4s ease,border-color .4s ease;
+}
+.header.is-solid{background:rgba(236,236,230,.72);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line)}
+.header.is-hidden{transform:translateY(-100%)}
+.logo{font-family:var(--f-display);font-weight:800;font-size:clamp(1.2rem,1.6vw,1.5rem);letter-spacing:-.02em;display:flex;align-items:center;gap:.5em;z-index:2}
+.logo-dot{width:.42em;height:.42em;background:var(--accent);border-radius:50%;transform:translateY(-.55em)}
+.nav-desktop{display:flex;align-items:center;gap:clamp(1.6rem,3vw,3.2rem)}
+.nav-link{position:relative;font-family:var(--f-mono);font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;padding:.3em 0}
+.nav-link::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease-out-quart)}
+.nav-link:hover::after{transform:scaleX(1);transform-origin:left}
+.head-right{display:flex;align-items:center;gap:1.4rem;z-index:2}
+.head-cta{display:inline-flex}
+.hamburger{width:44px;height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative}
+.hamburger-line{width:22px;height:2px;background:var(--ink);transition:transform .4s var(--ease-in-out-quart),opacity .3s ease}
+html.menu-open .hamburger-line:nth-child(1){transform:translateY(8px) rotate(45deg)}
+html.menu-open .hamburger-line:nth-child(2){opacity:0}
+html.menu-open .hamburger-line:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+@media (min-width:961px){.hamburger{display:none}}
+@media (max-width:960px){.nav-desktop{display:none}.head-cta{display:none}}
+.menu-overlay{
+position:fixed;inset:0;z-index:8500;background:var(--ink);color:var(--bg);
+clip-path:circle(0% at calc(100% - 40px) 40px);
+transition:clip-path .75s var(--ease-in-out-quart);
+display:flex;flex-direction:column;justify-content:space-between;
+padding:clamp(1.25rem,4vw,3rem);pointer-events:none;
+}
+html.menu-open .menu-overlay{clip-path:circle(150% at calc(100% - 40px) 40px);pointer-events:auto}
+.menu-links{display:flex;flex-direction:column;gap:.2em;margin-top:auto;margin-bottom:auto}
+.menu-link{
+font-family:var(--f-display);font-weight:800;text-transform:uppercase;
+font-size:clamp(2.4rem,10vw,5.5rem);letter-spacing:-.02em;line-height:1.15;
+overflow:hidden;display:flex;align-items:center;gap:.35em;
+}
+.menu-link span.mi{opacity:.4;font-family:var(--f-mono);font-size:.32em;font-weight:600;letter-spacing:0}
+.menu-foot{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;padding-top:2rem;border-top:1px solid rgba(246,245,240,.2)}
+.menu-socials{display:flex;gap:1.6rem;font-family:var(--f-mono);font-size:.8rem;letter-spacing:.05em;text-transform:uppercase}
+.menu-socials a{opacity:.7;transition:opacity .3s}
+.menu-socials a:hover{opacity:1}
+.menu-meta{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.05em;opacity:.55;text-align:right}
+.hero{position:relative;min-height:100svh;padding-top:var(--header-h);display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
+.hero-stage{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero-media{
+position:absolute;top:50%;left:50%;width:78vw;height:62vh;max-width:1400px;
+transform:translate(-50%,-50%);
+clip-path:inset(50% 50% 50% 50% round 4px);
+overflow:hidden;z-index:1;will-change:clip-path;
+}
+.hero-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.32);will-change:transform}
+.hero-media::after{content:'';position:absolute;inset:0;background:var(--ink);opacity:.18;mix-blend-mode:multiply}
+.hero-copy{position:relative;z-index:2;mix-blend-mode:difference;color:#fff;pointer-events:none;padding-inline:clamp(1.25rem,3vw,3rem)}
+.hero-line{overflow:hidden}
+.hero-line:nth-child(2){text-align:right}
+@media (max-width:760px){
+.hero-copy{mix-blend-mode:normal;color:var(--ink)}
+.hero-media{opacity:.16;width:100vw;height:100vh;max-width:none}
+}
+.hero-foot{border-top:1px solid var(--line);display:grid;grid-template-columns:1.1fr 1fr 1fr;background:var(--bg)}
+.hero-foot-cell{padding:clamp(1.25rem,3vw,2.4rem);display:flex;align-items:center;justify-content:center;text-align:center;border-right:1px solid var(--line);min-height:120px}
+.hero-foot-cell:last-child{border-right:0}
+.scroll-cue{display:inline-flex;flex-direction:column;align-items:center;gap:.6rem}
+.scroll-cue-line{width:1px;height:34px;background:var(--ink-30);position:relative;overflow:hidden}
+.scroll-cue-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--ink);animation:cueDrop 1.8s var(--ease-in-out-quart) infinite}
+@keyframes cueDrop{0%{top:-100%}60%{top:100%}100%{top:100%}}
+@media (max-width:760px){.hero-foot{grid-template-columns:1fr}.hero-foot-cell{border-right:0;border-bottom:1px solid var(--line);min-height:96px}.hero-foot-cell:last-child{border-bottom:0}}
+@media (prefers-reduced-motion:reduce){.scroll-cue-line::after{animation:none;top:0}}
+.marquee-strip{overflow:hidden;background:var(--ink);color:var(--bg);border-bottom:1px solid var(--line);padding-block:.95rem}
+.marquee-strip .marquee-track{display:flex;width:max-content;will-change:transform}
+.marquee-strip .marquee-item{
+display:flex;align-items:center;gap:1.4rem;padding-inline:1.4rem;
+font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:clamp(1.05rem,1.8vw,1.7rem);letter-spacing:-.01em;white-space:nowrap;
+}
+.marquee-strip .marquee-item i{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.stats{border-bottom:1px solid var(--line)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:clamp(2.2rem,5vw,4rem) clamp(1.25rem,3vw,2.4rem);border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat-num{font-family:var(--f-display);font-weight:800;font-size:clamp(2.6rem,5.6vw,5rem);letter-spacing:-.03em;display:flex;align-items:baseline;gap:.15em}
+.stat-num .unit{font-size:.42em;font-weight:700}
+.stat-label{margin-top:.9rem;font-family:var(--f-mono);font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-70);max-width:16em}
+@media (max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:0}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
+@media (max-width:480px){.stats-grid{grid-template-columns:1fr}.stat{border-right:0!important;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}}
+.manifesto{min-height:110vh;display:flex;align-items:center;background:var(--ink);color:var(--bg);border-bottom:1px solid var(--line);padding-block:clamp(4rem,10vh,7rem)}
+.manifesto-inner{width:100%;padding-inline:clamp(1.25rem,4vw,3.5rem)}
+.manifesto-tag{color:var(--bg);opacity:.5;margin-bottom:1.6rem}
+.manifesto-text{width:100%}
+.manifesto-text .split-char{color:transparent;-webkit-text-stroke:1px rgba(246,245,240,.28)}
+.programs-wrapper{border-bottom:1px solid var(--line);background:var(--bg);overflow:hidden}
+.programs-head{padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,4vw,3.5rem);display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.programs-head p{max-width:26em;font-family:var(--f-body);color:var(--ink-70);margin-top:1rem}
+.h-track{display:flex;width:400vw;height:100vh}
+.h-panel{display:flex;width:100vw;height:100%;border-right:1px solid var(--line);flex-shrink:0}
+.p-left{width:42%;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line);padding:clamp(1.5rem,3.5vw,3.5rem)}
+.p-left .top-row{display:flex;justify-content:space-between;align-items:center}
+.p-num{font-family:var(--f-display);font-weight:800;font-size:clamp(3.5rem,8vw,7rem);opacity:.14;line-height:.8}
+.p-title{margin-top:.4rem}
+.p-desc{margin-top:1.6rem;max-width:30em;color:var(--ink-70)}
+.p-stack{padding-top:1.1rem;border-top:1px solid var(--line);color:var(--ink-70)}
+.p-right{width:58%;position:relative;overflow:hidden}
+.p-right img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transform:scale(1.12);will-change:transform,filter;transition:filter .6s ease}
+.h-panel:hover .p-right img{filter:grayscale(0) contrast(1.05)}
+@media (max-width:1024px){
+.h-track{width:100%!important;height:auto;flex-direction:column;transform:none!important}
+.h-panel{width:100%;height:auto;flex-direction:column;border-right:0;border-bottom:1px solid var(--line)}
+.p-left{width:100%;border-right:0;border-bottom:1px solid var(--line);min-height:auto;gap:2rem}
+.p-right{width:100%;aspect-ratio:4/3}
+}
+.method{border-bottom:1px solid var(--line);padding-block:clamp(3rem,8vw,6rem)}
+.method-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3.5rem)}
+.method-head p{max-width:28em;margin-top:1rem;color:var(--ink-70)}
+.method-list{padding-inline:clamp(1.25rem,4vw,3.5rem);position:relative}
+.method-line{position:absolute;left:calc(clamp(1.25rem,4vw,3.5rem) + 27px);top:8px;bottom:8px;width:1px;background:var(--line)}
+.method-line-fill{position:absolute;top:0;left:0;width:100%;height:0%;background:var(--accent)}
+.method-step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:clamp(1.2rem,3vw,2.6rem);padding-block:clamp(1.6rem,4vw,2.6rem);border-top:1px solid var(--line)}
+.method-step:last-child{border-bottom:1px solid var(--line)}
+.step-num{
+width:56px;height:56px;border-radius:50%;border:1px solid var(--line-strong);
+display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-weight:700;font-size:.95rem;
+background:var(--bg);position:relative;z-index:2;transition:background .4s ease,color .4s ease,border-color .4s ease;flex:none;
+}
+.method-step.is-active .step-num{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.step-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(1rem,3vw,3rem);align-items:start}
+.step-title{display:flex;align-items:baseline;gap:.8rem}
+.step-tag{color:var(--ink-50)}
+.step-text{color:var(--ink-70);max-width:34em}
+@media (max-width:760px){.step-body{grid-template-columns:1fr}}
+.mentors{border-bottom:1px solid var(--line);position:relative}
+.mentors-head{padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,4vw,3.5rem);border-bottom:1px solid var(--line)}
+.mentors-head p{max-width:26em;margin-top:1rem;color:var(--ink-70)}
+.mentor{
+border-top:1px solid var(--line);padding:clamp(1.6rem,3.5vw,2.6rem) clamp(1.25rem,4vw,3.5rem);
+display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;transition:background .35s ease;position:relative;
+}
+.mentors .mentor:last-child{border-bottom:1px solid var(--line)}
+.mentor:hover{background:var(--paper)}
+.mentor-name{display:flex;align-items:center;gap:1.2rem}
+.mentor-thumb{width:46px;height:46px;border-radius:50%;overflow:hidden;flex:none}
+.mentor-thumb img{width:100%;height:100%;object-fit:cover}
+.mentor-role{color:var(--ink-70);text-align:right}
+.reveal-frame{
+position:fixed;top:0;left:0;width:min(300px,32vw);aspect-ratio:3/4;
+pointer-events:none;z-index:150;opacity:0;transform:translate(-50%,-50%) scale(.85);
+overflow:hidden;will-change:transform,opacity;
+}
+.reveal-frame img{width:100%;height:100%;object-fit:cover}
+body.show-reveal .reveal-frame{opacity:1;transform:translate(-50%,-50%) scale(1);transition:opacity .4s var(--ease-out-expo),transform .4s var(--ease-out-expo)}
+@media (max-width:900px){.reveal-frame{display:none}.mentor-role{text-align:left;width:100%}}
+.testimonials{border-bottom:1px solid var(--line);background:var(--paper);padding-block:clamp(3rem,7vw,5rem);overflow:hidden}
+.test-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3rem)}
+.test-track{display:flex;width:max-content;gap:1.5rem;padding-inline:clamp(1.25rem,4vw,3.5rem)}
+.test-card{
+width:min(420px,82vw);flex:none;background:var(--bg);border:1px solid var(--line);padding:clamp(1.6rem,3vw,2.4rem);
+display:flex;flex-direction:column;justify-content:space-between;gap:2rem;min-height:280px;
+}
+.test-quote{font-family:var(--f-display);font-weight:700;font-size:clamp(1.05rem,1.7vw,1.35rem);letter-spacing:-.01em;line-height:1.3}
+.test-who{display:flex;align-items:center;gap:1rem;font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-70)}
+.test-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;flex:none}
+.test-avatar img{width:100%;height:100%;object-fit:cover}
+.faq{border-bottom:1px solid var(--line);padding-block:clamp(3rem,7vw,5.5rem)}
+.faq-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3rem)}
+.faq-head p{max-width:26em;margin-top:1rem;color:var(--ink-70)}
+.faq-list{padding-inline:clamp(1.25rem,4vw,3.5rem)}
+.faq-item{border-top:1px solid var(--line)}
+.faq-list .faq-item:last-child{border-bottom:1px solid var(--line)}
+.faq-q{
+width:100%;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;
+padding-block:clamp(1.4rem,3vw,1.9rem);text-align:left;
+}
+.faq-q .t-display{font-size:clamp(1.1rem,2vw,1.5rem);text-transform:none;letter-spacing:-.01em}
+.faq-icon{width:26px;height:26px;position:relative;flex:none}
+.faq-icon::before,.faq-icon::after{content:'';position:absolute;top:50%;left:50%;background:var(--ink);transform:translate(-50%,-50%)}
+.faq-icon::before{width:16px;height:1.5px}
+.faq-icon::after{width:1.5px;height:16px;transition:transform .35s var(--ease-out-quart)}
+.faq-item.is-open .faq-icon::after{transform:translate(-50%,-50%) rotate(90deg) scale(0)}
+.faq-a{height:0;overflow:hidden}
+.faq-a-inner{padding-bottom:clamp(1.4rem,3vw,2rem);max-width:44em;color:var(--ink-70)}
+.cta{background:var(--ink);color:var(--bg);border-bottom:1px solid rgba(246,245,240,.15)}
+.cta-grid{display:grid;grid-template-columns:1.3fr 1fr}
+.cta-main{padding:clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,3.5rem);border-right:1px solid rgba(246,245,240,.15);display:flex;flex-direction:column;justify-content:space-between;gap:3rem}
+.cta-main .btn-fill{background:var(--accent);border-color:var(--accent)}
+.cta-main .btn-fill::before{background:var(--bg)}
+.cta-main .btn-fill:hover span{color:var(--ink)}
+.cta-side{padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,4vw,3rem);display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem}
+.cta-side p{opacity:.55}
+.newsletter{position:relative;display:flex;align-items:center;border-bottom:1px solid rgba(246,245,240,.35);padding-block:1.1rem}
+.newsletter input{flex:1;background:transparent;border:0;outline:0;color:var(--bg);font-family:var(--f-mono);font-size:.95rem}
+.newsletter input::placeholder{color:rgba(246,245,240,.4)}
+.newsletter button{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;flex:none}
+.newsletter-msg{margin-top:.8rem;font-family:var(--f-mono);font-size:.78rem;color:var(--accent);height:1em}
+@media (max-width:900px){.cta-grid{grid-template-columns:1fr}.cta-main{border-right:0;border-bottom:1px solid rgba(246,245,240,.15)}}
+.footer{background:var(--ink);color:var(--bg)}
+.footer-links{display:grid;grid-template-columns:repeat(4,1fr)}
+.footer-col{padding:clamp(1.8rem,3.5vw,2.6rem);border-right:1px solid rgba(246,245,240,.15)}
+.footer-col:last-child{border-right:0}
+.footer-col h4{opacity:.5;margin-bottom:1rem}
+.footer-col a{display:block;padding-block:.4rem;font-family:var(--f-body);opacity:.85;transition:opacity .3s}
+.footer-col a:hover{opacity:1;color:var(--accent)}
+@media (max-width:900px){.footer-links{grid-template-columns:repeat(2,1fr)}.footer-col:nth-child(2){border-right:0}.footer-col:nth-child(1),.footer-col:nth-child(2){border-bottom:1px solid rgba(246,245,240,.15)}}
+@media (max-width:480px){.footer-links{grid-template-columns:1fr}.footer-col{border-right:0!important;border-bottom:1px solid rgba(246,245,240,.15)}}
+.footer-word{padding-top:clamp(3vw,6vh,6vw);text-align:center;overflow:hidden;border-top:1px solid rgba(246,245,240,.15)}
+.footer-word .t-display{font-size:clamp(4rem,19vw,17rem);line-height:.76;letter-spacing:-.045em}
+.footer-word .split-char{display:inline-block;transform:translateY(102%);will-change:transform}
+.footer-bar{display:flex;justify-content:space-between;padding:1.4rem clamp(1.25rem,4vw,3.5rem);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;opacity:.68;flex-wrap:wrap;gap:.6rem}
+@media (prefers-reduced-motion:reduce){
+*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<canvas id="noise-canvas" aria-hidden="true"></canvas>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span class="cursor-label" id="cursor-label"></span></div>
+<div class="preloader" role="status" aria-live="polite">
+<div class="pre-top">
+<div class="t-mono">NEXUS<br>ACADEMY</div>
+<div class="t-mono">FULLY REMOTE<br>EST. 2016</div>
+</div>
+<div class="pre-log" id="pre-log">
+BOOT// core.sys v9.4<br>
+mounting curriculum modules<br>
+compiling typography<br>
+awaiting assets
+</div>
+<div class="pre-bottom">
+<div class="pre-status" id="pre-status">LOADING ASSETS</div>
+<div class="pre-count" id="pre-count">00</div>
+</div>
+<div class="pre-bar-track"><div class="pre-bar" id="pre-bar"></div></div>
+</div>
+<header class="header" id="site-header">
+<a href="#main" class="logo hover-target" data-cursor="HOME">
+<span>NEXUS</span><span class="logo-dot" aria-hidden="true"></span>
+</a>
+<nav class="nav-desktop" aria-label="Primary">
+<a href="#programs" class="nav-link hover-target">Programs</a>
+<a href="#method" class="nav-link hover-target">Method</a>
+<a href="#mentors" class="nav-link hover-target">Mentors</a>
+<a href="#faq" class="nav-link hover-target">FAQ</a>
+</nav>
+<div class="head-right">
+<a href="#apply" class="btn btn-fill head-cta hover-target"><span>Apply now</span></a>
+<button class="hamburger hover-target" id="menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+<span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+</button>
+</div>
+</header>
+<div class="menu-overlay" id="mobile-menu">
+<nav class="menu-links" aria-label="Mobile">
+<a href="#programs" class="menu-link nav-close hover-target"><span class="mi">01</span>Programs</a>
+<a href="#method" class="menu-link nav-close hover-target"><span class="mi">02</span>Method</a>
+<a href="#mentors" class="menu-link nav-close hover-target"><span class="mi">03</span>Mentors</a>
+<a href="#faq" class="menu-link nav-close hover-target"><span class="mi">04</span>FAQ</a>
+<a href="#apply" class="menu-link nav-close hover-target"><span class="mi">05</span>Apply</a>
+</nav>
+<div class="menu-foot">
+<div class="menu-socials">
+<a href="#" class="hover-target">Instagram</a>
+<a href="#" class="hover-target">X</a>
+<a href="#" class="hover-target">Discord</a>
+</div>
+<div class="menu-meta">hello@nexus.academy<br>+996 000 000 000</div>
+</div>
+</div>
+<main id="main">
+<section class="hero">
+<div class="hero-stage">
+<div class="hero-media" id="hero-media">
+<img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" srcset="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=900&amp;auto=format&amp;fit=crop 900w,https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=1600&amp;auto=format&amp;fit=crop 1600w,https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=2200&amp;auto=format&amp;fit=crop 2200w" sizes="80vw" alt="Brutalist concrete architecture bathed in harsh light" id="hero-img" fetchpriority="high">
+</div>
+<h1 class="hero-copy t-display text-cinema">
+<div class="hero-line gs-reveal">WE DON'T</div>
+<div class="hero-line gs-reveal">TEACH.</div>
+<div class="hero-line gs-reveal" style="color:var(--accent);mix-blend-mode:normal">WE REWIRE.</div>
+</h1>
+</div>
+<div class="hero-foot">
+<div class="hero-foot-cell">
+<span class="t-mono">Based in cyberspace<br>Open to everyone, everywhere</span>
+</div>
+<div class="hero-foot-cell">
+<a href="#programs" class="scroll-cue hover-target" data-cursor="SCROLL">
+<span class="t-mono scramble" data-text="SCROLL TO EXPLORE">SCROLL TO EXPLORE</span>
+<span class="scroll-cue-line" aria-hidden="true"></span>
+</a>
+</div>
+<div class="hero-foot-cell">
+<a href="#apply" class="btn-circle hover-target" data-cursor="APPLY">
+<span class="btn-circle-label">Apply<br>2025</span>
+</a>
+</div>
+</div>
+</section>
+<section class="marquee-strip" aria-label="Alumni hired at">
+<div class="marquee-track" id="marquee-track">
+<div class="marquee-item"><i></i>Alumni hired at</div>
+<div class="marquee-item">Media.Monks</div>
+<div class="marquee-item"><i></i>AKQA</div>
+<div class="marquee-item">Studio Freight</div>
+<div class="marquee-item"><i></i>RESN</div>
+<div class="marquee-item">Unit9</div>
+<div class="marquee-item"><i></i>Locomotive</div>
+</div>
+</section>
+<section class="stats">
+<div class="stats-grid">
+<div class="stat">
+<div class="stat-num"><span class="gs-count" data-count="1240">0</span><span class="unit">+</span></div>
+<div class="stat-label">Graduates working in digital product &amp; motion studios</div>
+</div>
+<div class="stat">
+<div class="stat-num"><span class="gs-count" data-count="94">0</span><span class="unit">%</span></div>
+<div class="stat-label">Hired or freelancing within six months of graduating</div>
+</div>
+<div class="stat">
+<div class="stat-num"><span class="gs-count" data-count="42">0</span><span class="unit">+</span></div>
+<div class="stat-label">Countries our cohorts have shipped work from</div>
+</div>
+<div class="stat">
+<div class="stat-num"><span class="gs-count" data-count="4">0</span><span class="unit">.9</span></div>
+<div class="stat-label">Average studio rating across nine graduating cohorts</div>
+</div>
+</div>
+</section>
+<section class="manifesto">
+<div class="manifesto-inner">
+<p class="t-mono manifesto-tag">// Manifesto</p>
+<h2 class="t-display text-xl manifesto-text gs-fill">
+Traditional education is slow, generic, and built for a web that stopped existing a decade ago. The internet rewards the bold, the fast, and the unreasonably detailed. We built NEXUS to train the people who will build what comes next.
+</h2>
+</div>
+</section>
+<section id="programs" class="programs-wrapper">
+<div class="programs-head">
+<div>
+<p class="eyebrow">Curriculum</p>
+<h2 class="t-display text-lg" style="margin-top:.6rem">Four studios.<br>One craft.</h2>
+</div>
+<p>Every studio runs for a fixed number of weeks, ends in a shipped project, and is graded by working practitioners, not a rubric.</p>
+</div>
+<div class="h-track" id="h-track">
+<article class="h-panel">
+<div class="p-left">
+<div class="top-row">
+<span class="t-mono">Program // 01</span>
+<span class="t-mono">12 weeks</span>
+</div>
+<div>
+<div class="p-num">01</div>
+<h3 class="t-display text-lg p-title">Editorial<br>Frontend</h3>
+<p class="t-body p-desc">Grid systems, fluid type, and semantic structure. You'll build layouts that belong in a magazine, not a template gallery.</p>
+</div>
+<div class="t-mono p-stack">Stack: HTML, CSS, Sass, TypeScript</div>
+</div>
+<div class="p-right hover-target" data-cursor="VIEW">
+<img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Close-up of an editorial print layout" loading="lazy">
+</div>
+</article>
+<article class="h-panel">
+<div class="p-left">
+<div class="top-row">
+<span class="t-mono">Program // 02</span>
+<span class="t-mono">10 weeks</span>
+</div>
+<div>
+<div class="p-num">02</div>
+<h3 class="t-display text-lg p-title">Motion &amp;<br>Physics</h3>
+<p class="t-body p-desc">Breathe life into the DOM. Timelines, scroll-driven typography, and spring-based micro interactions that feel inevitable.</p>
+</div>
+<div class="t-mono p-stack">Stack: GSAP, Lenis, Motion One</div>
+</div>
+<div class="p-right hover-target" data-cursor="VIEW">
+<img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Long exposure light trails suggesting motion" loading="lazy">
+</div>
+</article>
+<article class="h-panel">
+<div class="p-left">
+<div class="top-row">
+<span class="t-mono">Program // 03</span>
+<span class="t-mono">14 weeks</span>
+</div>
+<div>
+<div class="p-num">03</div>
+<h3 class="t-display text-lg p-title">WebGL &amp;<br>Shaders</h3>
+<p class="t-body p-desc">The deep end. Procedural generation, fragment shaders, and interactive three-dimensional environments that run at sixty frames a second.</p>
+</div>
+<div class="t-mono p-stack">Stack: Three.js, GLSL, React Three Fiber</div>
+</div>
+<div class="p-right hover-target" data-cursor="VIEW">
+<img src="https://images.unsplash.com/photo-1633447617297-9c8c5e2482c5?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Abstract iridescent digital render" loading="lazy">
+</div>
+</article>
+<article class="h-panel">
+<div class="p-left">
+<div class="top-row">
+<span class="t-mono">Program // 04</span>
+<span class="t-mono">8 weeks</span>
+</div>
+<div>
+<div class="p-num">04</div>
+<h3 class="t-display text-lg p-title">Systems &amp;<br>Craft</h3>
+<p class="t-body p-desc">Design tokens, component architecture, accessibility, and performance budgets. The unglamorous work that makes everything else hold up.</p>
+</div>
+<div class="t-mono p-stack">Stack: Figma, Storybook, Lighthouse</div>
+</div>
+<div class="p-right hover-target" data-cursor="VIEW">
+<img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Neatly organised grid of design tokens on a wall" loading="lazy">
+</div>
+</article>
+</div>
+</section>
+<section id="method" class="method">
+<div class="method-head">
+<p class="eyebrow">Method</p>
+<h2 class="t-display text-lg" style="margin-top:.6rem">How a cohort<br>actually runs.</h2>
+<p>No lectures longer than twenty minutes. No busywork. Four repeating phases, every single week.</p>
+</div>
+<div class="method-list" id="method-list">
+<div class="method-line" aria-hidden="true"><div class="method-line-fill" id="method-line-fill"></div></div>
+<div class="method-step">
+<div class="step-num">01</div>
+<div class="step-body">
+<div class="step-title"><h3 class="t-display text-md">Immerse</h3><span class="t-mono step-tag">Mon–Tue</span></div>
+<p class="step-text">You study a real, shipped product built by the studio you're learning that discipline from, and reverse-engineer why every decision was made.</p>
+</div>
+</div>
+<div class="method-step">
+<div class="step-num">02</div>
+<div class="step-body">
+<div class="step-title"><h3 class="t-display text-md">Build</h3><span class="t-mono step-tag">Wed–Thu</span></div>
+<p class="step-text">You build the same class of problem from a blank file, paired with a mentor who has shipped that exact thing at scale before.</p>
+</div>
+</div>
+<div class="method-step">
+<div class="step-num">03</div>
+<div class="step-body">
+<div class="step-title"><h3 class="t-display text-md">Critique</h3><span class="t-mono step-tag">Fri</span></div>
+<p class="step-text">Your work is reviewed live, on a projector, in front of your cohort. No feedback forms. Notes are blunt, specific, and public.</p>
+</div>
+</div>
+<div class="method-step">
+<div class="step-num">04</div>
+<div class="step-body">
+<div class="step-title"><h3 class="t-display text-md">Ship</h3><span class="t-mono step-tag">Ongoing</span></div>
+<p class="step-text">Every project goes live on a real domain with real users watching, because a portfolio piece nobody can visit teaches you nothing.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="mentors" class="mentors">
+<div class="reveal-frame" id="reveal-frame"><img src="" alt="" id="reveal-img"></div>
+<div class="mentors-head">
+<p class="eyebrow">Mentors</p>
+<h2 class="t-display text-lg" style="margin-top:.6rem">The architects.</h2>
+<p>Everyone teaching at NEXUS still ships client and product work. Nobody here teaches full time.</p>
+</div>
+<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name">
+<div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
+<h3 class="t-display text-md">Alex Chen</h3>
+</div>
+<span class="t-mono mentor-role">Creative developer, Media.Monks</span>
+</div>
+<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name">
+<div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
+<h3 class="t-display text-md">Sarah Jones</h3>
+</div>
+<span class="t-mono mentor-role">WebGL artist &amp; Awwwards jury</span>
+</div>
+<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name">
+<div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
+<h3 class="t-display text-md">David Koch</h3>
+</div>
+<span class="t-mono mentor-role">Lead designer, Studio Freight</span>
+</div>
+<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name">
+<div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
+<h3 class="t-display text-md">Priya Nair</h3>
+</div>
+<span class="t-mono mentor-role">Design systems lead, Linear</span>
+</div>
+</section>
+<section class="testimonials" aria-label="Alumni testimonials">
+<div class="test-head">
+<p class="eyebrow">From the cohorts</p>
+<h2 class="t-display text-lg" style="margin-top:.6rem">Nobody asked us<br>to say this.</h2>
+</div>
+<div class="test-track" id="test-track">
+<article class="test-card">
+<p class="test-quote">I applied knowing nothing about animation. Ten weeks later I shipped a WebGL case study that got me hired.</p>
+<div class="test-who"><div class="test-avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>Mira Osei, Cohort 07</div>
+</article>
+<article class="test-card">
+<p class="test-quote">The Friday critiques were brutal in the best way. I've never grown that fast anywhere else, including my last job.</p>
+<div class="test-who"><div class="test-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>Tomás Rivera, Cohort 05</div>
+</article>
+<article class="test-card">
+<p class="test-quote">Every mentor was still actively shipping work. That single fact changed how seriously I took the whole program.</p>
+<div class="test-who"><div class="test-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>Hana Kobayashi, Cohort 09</div>
+</article>
+<article class="test-card">
+<p class="test-quote">I came from a bootcamp that taught frameworks. NEXUS taught me how a browser actually paints a pixel.</p>
+<div class="test-who"><div class="test-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>Kwame Boateng, Cohort 04</div>
+</article>
+</div>
+</section>
+<section id="faq" class="faq">
+<div class="faq-head">
+<p class="eyebrow">Before you apply</p>
+<h2 class="t-display text-lg" style="margin-top:.6rem">Questions,<br>answered plainly.</h2>
+</div>
+<div class="faq-list" id="faq-list">
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">
+<span class="t-display">Do I need prior experience?</span>
+<span class="faq-icon" aria-hidden="true"></span>
+</button>
+<div class="faq-a"><div class="faq-a-inner">No. About half of every cohort has never written a line of code before day one. What matters is that you finish what you start.</div></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">
+<span class="t-display">Is this fully remote?</span>
+<span class="faq-icon" aria-hidden="true"></span>
+</button>
+<div class="faq-a"><div class="faq-a-inner">Yes. Every studio, critique, and mentor session runs live online, and every session is recorded for your own timezone.</div></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">
+<span class="t-display">What's the weekly time commitment?</span>
+<span class="faq-icon" aria-hidden="true"></span>
+</button>
+<div class="faq-a"><div class="faq-a-inner">Plan for 25 to 30 hours a week. This is intentionally closer to a first job than a hobby course.</div></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">
+<span class="t-display">Can I take more than one studio?</span>
+<span class="faq-icon" aria-hidden="true"></span>
+</button>
+<div class="faq-a"><div class="faq-a-inner">Most graduates do. Studios are sequenced so Editorial Frontend and Motion &amp; Physics both feed directly into WebGL &amp; Shaders.</div></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">
+<span class="t-display">What happens if I'm not hired?</span>
+<span class="faq-icon" aria-hidden="true"></span>
+</button>
+<div class="faq-a"><div class="faq-a-inner">You keep full access to mentor office hours and the alumni job board for twelve months at no extra cost, with no expiry clock.</div></div>
+</div>
+</div>
+</section>
+<section id="apply" class="cta">
+<div class="cta-grid">
+<div class="cta-main">
+<h2 class="t-display text-lg">Ready to<br>break the internet?</h2>
+<a href="mailto:hello@nexus.academy" class="btn btn-fill hover-target" style="align-self:flex-start"><span>Start your application</span></a>
+</div>
+<div class="cta-side">
+<div>
+<p class="t-mono" style="opacity:.5">Newsletter</p>
+<form id="newsletter-form" novalidate>
+<div class="newsletter">
+<input type="email" placeholder="Enter your email" aria-label="Email address" required>
+<button type="submit" class="hover-target">Join</button>
+</div>
+</form>
+<p class="newsletter-msg" id="newsletter-msg" role="status"></p>
+</div>
+<div>
+<p class="t-mono" style="opacity:.5">Studio</p>
+<p style="margin-top:.6rem">No campus, no commute.<br>Cohorts run live across every timezone.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="footer-links">
+<div class="footer-col">
+<h4 class="t-mono">Programs</h4>
+<a href="#programs" class="hover-target">Editorial Frontend</a>
+<a href="#programs" class="hover-target">Motion &amp; Physics</a>
+<a href="#programs" class="hover-target">WebGL &amp; Shaders</a>
+<a href="#programs" class="hover-target">Systems &amp; Craft</a>
+</div>
+<div class="footer-col">
+<h4 class="t-mono">Academy</h4>
+<a href="#method" class="hover-target">Method</a>
+<a href="#mentors" class="hover-target">Mentors</a>
+<a href="#faq" class="hover-target">FAQ</a>
+<a href="#apply" class="hover-target">Apply</a>
+</div>
+<div class="footer-col">
+<h4 class="t-mono">Connect</h4>
+<a href="#" class="hover-target">Instagram</a>
+<a href="#" class="hover-target">X</a>
+<a href="#" class="hover-target">Discord</a>
+</div>
+<div class="footer-col">
+<h4 class="t-mono">Contact</h4>
+<a href="mailto:hello@nexus.academy" class="hover-target">hello@nexus.academy</a>
+<span class="t-mono" style="opacity:.6;display:block;padding-block:.4rem">Remote · Worldwide</span>
+</div>
+</div>
+<div class="footer-word">
+<div class="t-display gs-footer">NEXUS</div>
+</div>
+<div class="footer-bar">
+<span>© <span id="year"></span> NEXUS Academy</span>
+<span>Built for the bold, the fast, and the unconventional</span>
+</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+(function(){
+var yearEl=document.getElementById('year');
+if(yearEl)yearEl.textContent=new Date().getFullYear();
+var prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var isTouch=window.matchMedia('(pointer: coarse)').matches;
+var isMobile=window.innerWidth<=1024;
+var gsapReady=typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined';
+if(gsapReady)gsap.registerPlugin(ScrollTrigger);
+
+function splitChars(el){
+if(!el)return;
+var text=el.textContent.trim();
+el.textContent='';
+var words=text.split(/\s+/);
+words.forEach(function(word,wi){
+var wordSpan=document.createElement('span');
+wordSpan.className='split-word';
+word.split('').forEach(function(ch){
+var charSpan=document.createElement('span');
+charSpan.className='split-char';
+charSpan.textContent=ch;
+wordSpan.appendChild(charSpan);
+});
+el.appendChild(wordSpan);
+if(wi<words.length-1)el.appendChild(document.createTextNode(' '));
+});
+}
+
+function Scrambler(el){
+this.el=el;
+this.chars='!<>-_\\/[]{}—=+*^?#_01';
+this.frame=0;
+this.queue=[];
+this.resolve=null;
+this.frameRequest=null;
+this.tick=this.tick.bind(this);
+}
+Scrambler.prototype.setText=function(newText){
+var oldText=this.el.textContent;
+var length=Math.max(oldText.length,newText.length);
+var self=this;
+var promise=new Promise(function(res){self.resolve=res});
+this.queue=[];
+for(var i=0;i<length;i++){
+var from=oldText[i]||'';
+var to=newText[i]||'';
+var start=Math.floor(Math.random()*20);
+var end=start+Math.floor(Math.random()*20);
+this.queue.push({from:from,to:to,start:start,end:end});
+}
+cancelAnimationFrame(this.frameRequest);
+this.frame=0;
+this.tick();
+return promise;
+};
+Scrambler.prototype.tick=function(){
+var output='';
+var complete=0;
+for(var i=0,n=this.queue.length;i<n;i++){
+var q=this.queue[i];
+if(this.frame>=q.end){
+complete++;
+output+=q.to;
+}else if(this.frame>=q.start){
+if(!q.char||Math.random()<0.3){
+q.char=this.chars[Math.floor(Math.random()*this.chars.length)];
+}
+output+='<span style="opacity:.5">'+q.char+'</span>';
+}else{
+output+=q.from;
+}
+}
+this.el.innerHTML=output;
+if(complete===this.queue.length){
+if(this.resolve)this.resolve();
+}else{
+this.frameRequest=requestAnimationFrame(this.tick);
+this.frame++;
+}
+};
+
+function initScramblers(){
+document.querySelectorAll('.scramble').forEach(function(el){
+var fx=new Scrambler(el);
+var original=el.getAttribute('data-text')||el.textContent;
+el.addEventListener('mouseenter',function(){fx.setText(original)});
+});
+}
+
+function initPreloader(){
+var preloader=document.querySelector('.preloader');
+var counter=document.getElementById('pre-count');
+var bar=document.getElementById('pre-bar');
+var status=document.getElementById('pre-status');
+var images=Array.prototype.slice.call(document.images);
+var total=images.length||1;
+var loaded=0;
+var displayed=0;
+var done=false;
+
+function pad2(n){
+n=String(n);
+return n.length<2?'0'+n:n;
+}
+
+function setPct(pct){
+displayed=Math.max(displayed,pct);
+if(counter)counter.textContent=pad2(Math.round(displayed));
+if(bar)bar.style.width=displayed+'%';
+}
+
+function markDone(){
+if(done)return;
+done=true;
+setPct(100);
+if(status)status.textContent='READY';
+setTimeout(remove,250);
+}
+
+function remove(){
+document.documentElement.classList.remove('is-loading');
+if(gsapReady){
+gsap.to(preloader,{
+yPercent:-100,
+duration:1.1,
+ease:'power4.inOut',
+onComplete:function(){
+preloader.style.display='none';
+initApp();
+}
+});
+}else{
+preloader.style.display='none';
+initApp();
+}
+}
+
+images.forEach(function(img){
+if(img.complete){
+loaded++;
+}else{
+img.addEventListener('load',onImg);
+img.addEventListener('error',onImg);
+}
+});
+
+function onImg(){
+loaded++;
+setPct(Math.min(96,(loaded/total)*100));
+if(loaded>=total)markDone();
+}
+
+setPct(Math.min(96,(loaded/total)*100));
+if(loaded>=total)setTimeout(markDone,400);
+
+var tick=setInterval(function(){
+if(done){clearInterval(tick);return}
+setPct(Math.min(92,displayed+Math.random()*9));
+},110);
+
+setTimeout(function(){clearInterval(tick);markDone()},2600);
+}
+
+function initApp(){
+initScramblers();
+if(!gsapReady){
+console.error('Animation libraries failed to load.');
+return;
+}
+try{
+var lenis=null;
+if(typeof Lenis!=='undefined'){
+lenis=new Lenis({
+duration:1.15,
+easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t))},
+smoothWheel:!prefersReducedMotion,
+touchMultiplier:1.6
+});
+(function raf(time){lenis.raf(time);requestAnimationFrame(raf)})();
+lenis.on('scroll',ScrollTrigger.update);
+gsap.ticker.add(function(time){lenis.raf(time*1000)});
+gsap.ticker.lagSmoothing(0);
+}
+
+var header=document.getElementById('site-header');
+var lastScroll=0;
+window.addEventListener('scroll',function(){
+var s=window.scrollY;
+if(header){
+header.classList.toggle('is-solid',s>10);
+if(s>lastScroll&&s>140){
+header.classList.add('is-hidden');
+}else{
+header.classList.remove('is-hidden');
+}
+}
+lastScroll=s;
+},{passive:true});
+
+var menuToggle=document.getElementById('menu-toggle');
+function closeMenu(){
+document.documentElement.classList.remove('menu-open');
+if(menuToggle)menuToggle.setAttribute('aria-expanded','false');
+if(lenis)lenis.start();
+}
+function openMenu(){
+document.documentElement.classList.add('menu-open');
+if(menuToggle)menuToggle.setAttribute('aria-expanded','true');
+if(lenis)lenis.stop();
+}
+if(menuToggle){
+menuToggle.addEventListener('click',function(){
+var isOpen=document.documentElement.classList.contains('menu-open');
+if(isOpen)closeMenu();else openMenu();
+});
+}
+document.querySelectorAll('.nav-close').forEach(function(a){
+a.addEventListener('click',closeMenu);
+});
+window.addEventListener('keydown',function(e){
+if(e.key==='Escape')closeMenu();
+});
+
+var heroLines=document.querySelectorAll('.hero-line');
+heroLines.forEach(splitChars);
+splitChars(document.querySelector('.gs-fill'));
+splitChars(document.querySelector('.gs-footer'));
+
+var heroTl=gsap.timeline({delay:.1});
+heroTl.to('#hero-media',{
+clipPath:'inset(0% 0% 0% 0% round 4px)',
+duration:1.6,
+ease:'power4.inOut'
+},0)
+.to('#hero-img',{scale:1,duration:1.8,ease:'power4.inOut'},0)
+.fromTo('.hero-line .split-char',
+{yPercent:110},
+{yPercent:0,duration:1,stagger:.02,ease:'power4.out'},.5
+);
+
+gsap.to('#hero-img',{
+yPercent:14,
+ease:'none',
+scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}
+});
+
+var marqueeTrack=document.getElementById('marquee-track');
+if(marqueeTrack){
+var baseWidth=marqueeTrack.scrollWidth;
+marqueeTrack.innerHTML+=marqueeTrack.innerHTML;
+if(!prefersReducedMotion){
+var mqTween=gsap.to(marqueeTrack,{
+x:-baseWidth,
+duration:baseWidth/70,
+ease:'none',
+repeat:-1
+});
+marqueeTrack.parentElement.addEventListener('mouseenter',function(){mqTween.timeScale(0.25)});
+marqueeTrack.parentElement.addEventListener('mouseleave',function(){mqTween.timeScale(1)});
+}
+}
+
+document.querySelectorAll('.gs-count').forEach(function(el){
+var target=parseFloat(el.getAttribute('data-count'));
+var counterObj={val:0};
+ScrollTrigger.create({
+trigger:el,
+start:'top 85%',
+once:true,
+onEnter:function(){
+if(prefersReducedMotion){
+el.textContent=target;
+return;
+}
+gsap.to(counterObj,{
+val:target,
+duration:1.8,
+ease:'power2.out',
+onUpdate:function(){
+el.textContent=target%1===0?Math.round(counterObj.val):counterObj.val.toFixed(1);
+}
+});
+}
+});
+});
+
+var fillChars=document.querySelectorAll('.gs-fill .split-char');
+if(fillChars.length){
+gsap.to(fillChars,{
+color:'var(--bg)',
+webkitTextStroke:'0px rgba(0,0,0,0)',
+stagger:.05,
+ease:'none',
+scrollTrigger:{
+trigger:'.manifesto',
+start:'top 65%',
+end:'bottom 65%',
+scrub:1
+}
+});
+}
+
+var mm=gsap.matchMedia();
+mm.add('(min-width:1025px)',function(){
+var track=document.getElementById('h-track');
+var panels=gsap.utils.toArray('.h-panel');
+if(track&&panels.length){
+var scrollTween=gsap.to(track,{
+xPercent:-100*(panels.length-1),
+ease:'none',
+scrollTrigger:{
+trigger:'.programs-wrapper',
+pin:true,
+scrub:1,
+end:function(){return '+='+track.offsetWidth}
+}
+});
+panels.forEach(function(panel){
+var img=panel.querySelector('.p-right img');
+if(img){
+gsap.to(img,{
+scale:1,
+xPercent:6,
+ease:'none',
+scrollTrigger:{
+trigger:panel,
+containerAnimation:scrollTween,
+start:'left right',
+end:'right left',
+scrub:true
+}
+});
+}
+});
+}
+return function(){};
+});
+
+var methodSteps=document.querySelectorAll('.method-step');
+var methodFill=document.getElementById('method-line-fill');
+methodSteps.forEach(function(step,i){
+ScrollTrigger.create({
+trigger:step,
+start:'top 60%',
+end:'bottom 60%',
+onToggle:function(self){
+step.classList.toggle('is-active',self.isActive);
+if(self.isActive&&methodFill){
+gsap.to(methodFill,{height:((i+1)/methodSteps.length*100)+'%',duration:.6,ease:'power2.out'});
+}
+}
+});
+});
+
+var faqItems=document.querySelectorAll('.faq-item');
+faqItems.forEach(function(item){
+var btn=item.querySelector('.faq-q');
+var panel=item.querySelector('.faq-a');
+btn.addEventListener('click',function(){
+var isOpen=item.classList.contains('is-open');
+faqItems.forEach(function(other){
+if(other!==item){
+other.classList.remove('is-open');
+other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+gsap.to(other.querySelector('.faq-a'),{height:0,duration:.5,ease:'power3.inOut'});
+}
+});
+if(isOpen){
+item.classList.remove('is-open');
+btn.setAttribute('aria-expanded','false');
+gsap.to(panel,{height:0,duration:.5,ease:'power3.inOut'});
+}else{
+item.classList.add('is-open');
+btn.setAttribute('aria-expanded','true');
+gsap.set(panel,{height:'auto'});
+var h=panel.offsetHeight;
+gsap.fromTo(panel,{height:0},{height:h,duration:.5,ease:'power3.inOut'});
+}
+});
+});
+
+var testTrack=document.getElementById('test-track');
+if(testTrack&&!isTouch){
+var testWidth=testTrack.scrollWidth-testTrack.parentElement.offsetWidth;
+if(testWidth>0){
+gsap.to(testTrack,{
+x:-testWidth,
+ease:'none',
+scrollTrigger:{
+trigger:'.testimonials',
+start:'top bottom',
+end:'bottom top',
+scrub:1
+}
+});
+}
+}
+
+var footerChars=document.querySelectorAll('.gs-footer .split-char');
+if(footerChars.length){
+gsap.to(footerChars,{
+y:'0%',
+duration:1.4,
+stagger:.04,
+ease:'power4.out',
+scrollTrigger:{trigger:'.footer',start:'top 85%'}
+});
+}
+
+var newsletterForm=document.getElementById('newsletter-form');
+if(newsletterForm){
+newsletterForm.addEventListener('submit',function(e){
+e.preventDefault();
+var msg=document.getElementById('newsletter-msg');
+var input=newsletterForm.querySelector('input');
+if(msg)msg.textContent='You are on the list.';
+if(input)input.value='';
+});
+}
+
+if(!isTouch&&!prefersReducedMotion){
+initNoiseCanvas();
+initCursorSystem();
+document.body.classList.add('js-cursor');
+}
+
+}catch(err){
+console.error('Animation execution error:',err);
+}
+}
+
+function initNoiseCanvas(){
+var canvas=document.getElementById('noise-canvas');
+if(!canvas)return;
+var ctx=canvas.getContext('2d',{alpha:false});
+var size=256;
+var pCanvas=document.createElement('canvas');
+pCanvas.width=size;pCanvas.height=size;
+var pCtx=pCanvas.getContext('2d');
+var imgData=pCtx.createImageData(size,size);
+var buf32=new Uint32Array(imgData.data.buffer);
+for(var i=0;i<buf32.length;i++){
+buf32[i]=Math.random()<0.5?0xff000000:0xffffffff;
+}
+pCtx.putImageData(imgData,0,0);
+var running=true;
+function draw(){
+if(!running)return;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle=ctx.createPattern(pCanvas,'repeat');
+ctx.save();
+ctx.translate(Math.random()*size,Math.random()*size);
+ctx.fillRect(-size,-size,canvas.width+size*2,canvas.height+size*2);
+ctx.restore();
+requestAnimationFrame(draw);
+}
+document.addEventListener('visibilitychange',function(){
+running=!document.hidden;
+if(running)requestAnimationFrame(draw);
+});
+var resizeTimer;
+window.addEventListener('resize',function(){
+clearTimeout(resizeTimer);
+resizeTimer=setTimeout(function(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+},200);
+},{passive:true});
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+requestAnimationFrame(draw);
+}
+
+function initCursorSystem(){
+var dot=document.querySelector('.cursor-dot');
+var ring=document.querySelector('.cursor-ring');
+var label=document.getElementById('cursor-label');
+if(!dot||!ring)return;
+var setDot=gsap.quickTo(dot,'x',{duration:.1,ease:'power2.out'});
+var setDotY=gsap.quickTo(dot,'y',{duration:.1,ease:'power2.out'});
+var setRingX=gsap.quickTo(ring,'x',{duration:.5,ease:'power3.out'});
+var setRingY=gsap.quickTo(ring,'y',{duration:.5,ease:'power3.out'});
+window.addEventListener('mousemove',function(e){
+setDot(e.clientX);setDotY(e.clientY);
+setRingX(e.clientX);setRingY(e.clientY);
+},{passive:true});
+
+document.querySelectorAll('.hover-target').forEach(function(el){
+el.addEventListener('mouseenter',function(){
+document.body.classList.add('cur-hover');
+var cursorText=el.getAttribute('data-cursor');
+if(cursorText&&label){
+document.body.classList.add('cur-drag');
+label.textContent=cursorText;
+}
+});
+el.addEventListener('mouseleave',function(){
+document.body.classList.remove('cur-hover');
+document.body.classList.remove('cur-drag');
+});
+});
+
+document.querySelectorAll('.btn-circle').forEach(function(btn){
+btn.addEventListener('mousemove',function(e){
+var rect=btn.getBoundingClientRect();
+var relX=e.clientX-rect.left-rect.width/2;
+var relY=e.clientY-rect.top-rect.height/2;
+gsap.to(btn,{x:relX*.3,y:relY*.3,duration:.4,ease:'power2.out'});
+});
+btn.addEventListener('mouseleave',function(){
+gsap.to(btn,{x:0,y:0,duration:.7,ease:'elastic.out(1,0.3)'});
+});
+});
+
+var revealFrame=document.getElementById('reveal-frame');
+var revealImg=document.getElementById('reveal-img');
+if(revealFrame&&revealImg){
+var setFrameX=gsap.quickTo(revealFrame,'x',{duration:.6,ease:'power3.out'});
+var setFrameY=gsap.quickTo(revealFrame,'y',{duration:.6,ease:'power3.out'});
+document.querySelectorAll('.mentor').forEach(function(row){
+row.addEventListener('mouseenter',function(){
+revealImg.src=row.getAttribute('data-img');
+document.body.classList.add('show-reveal');
+});
+row.addEventListener('mousemove',function(e){
+setFrameX(e.clientX);
+setFrameY(e.clientY);
+});
+row.addEventListener('mouseleave',function(){
+document.body.classList.remove('show-reveal');
+});
+});
+}
+}
+
+window.addEventListener('resize',function(){
+isMobile=window.innerWidth<=1024;
+if(gsapReady)ScrollTrigger.refresh();
+});
+
+initPreloader();
+})();
+</script>
+</body>
+</html>
