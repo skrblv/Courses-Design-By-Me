@@ -213,7 +213,7 @@ font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:
 .programs-wrapper{border-bottom:1px solid var(--line);background:var(--bg);overflow:hidden}
 .programs-head{padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,4vw,3.5rem);display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;border-bottom:1px solid var(--line)}
 .programs-head p{max-width:26em;font-family:var(--f-body);color:var(--ink-70);margin-top:1rem}
-.h-track{display:flex;width:400vw;height:100vh}
+.h-track{display:flex;height:100vh}
 .h-panel{display:flex;width:100vw;height:100%;border-right:1px solid var(--line);flex-shrink:0}
 .p-left{width:42%;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line);padding:clamp(1.5rem,3.5vw,3.5rem)}
 .p-left .top-row{display:flex;justify-content:space-between;align-items:center}
@@ -338,6 +338,8 @@ main{width:100%;overflow-x:hidden}
 <canvas id="noise-canvas" aria-hidden="true"></canvas>
 <div class="cursor-dot" aria-hidden="true"></div>
 <div class="cursor-ring" aria-hidden="true"><span class="cursor-label" id="cursor-label"></span></div>
+
+
 <div class="preloader" role="status" aria-live="polite">
 <div class="pre-top">
 <div class="t-mono">NEXUS<br>ACADEMY</div>
@@ -355,6 +357,9 @@ awaiting assets
 </div>
 <div class="pre-bar-track"><div class="pre-bar" id="pre-bar"></div></div>
 </div>
+
+
+
 <header class="header" id="site-header">
 <a href="#main" class="logo hover-target" data-cursor="HOME">
 <span>NEXUS</span><span class="logo-dot" aria-hidden="true"></span>
@@ -1036,8 +1041,8 @@ gsap.fromTo(el,
 
 gsap.utils.toArray('.gs-crazy-text').forEach(function(el,i){
 gsap.fromTo(el,
-{opacity:0,y:60,x:(i%2===0?30:-30),skewX:15,skewY:5,scale:0.9},
-{opacity:1,y:0,x:0,skewX:0,skewY:0,scale:1,duration:1.2,ease:"back.out(1.4)",scrollTrigger:{trigger:el,start:"top 95%",toggleActions:"play none none reverse"}}
+{opacity:0},
+{opacity:1,y:0,x:0,skewX:0,skewY:0,scale:1,duration:1.2,scrollTrigger:{trigger:el,start:"top 95%",toggleActions:"play none none reverse"}}
 );
 });
 
@@ -1113,7 +1118,7 @@ var scrollTween=gsap.to(track,{
 xPercent:-100*(panels.length-1),
 ease:'none',
 scrollTrigger:{
-trigger:'.programs-wrapper',
+trigger:'.h-track',
 pin:true,
 scrub:1,
 end:function(){return '+='+track.offsetWidth}
