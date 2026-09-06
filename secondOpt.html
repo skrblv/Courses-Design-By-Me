@@ -69,7 +69,7 @@ transition:top .25s var(--ease-out-quart);
 .t-mono{font-family:var(--f-mono);font-weight:600;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
 .t-body{font-family:var(--f-body);font-weight:400}
 .text-cinema{font-size:clamp(3.4rem,15vw,13rem);letter-spacing:-.03em}
-.text-xl{font-size:clamp(2.6rem,8.2vw,7.2rem);letter-spacing:-.025em}
+.text-xl{font-size:clamp(2rem,8.2vw,7.2rem);letter-spacing:-.025em}
 .text-lg{font-size:clamp(2rem,5vw,4.4rem);letter-spacing:-.02em}
 .text-md{font-size:clamp(1.5rem,3vw,2.4rem);letter-spacing:-.01em}
 .eyebrow{display:flex;align-items:center;gap:.6em;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-70)}
@@ -163,8 +163,8 @@ overflow:hidden;display:flex;align-items:center;gap:.35em;
 .menu-socials a{opacity:.7;transition:opacity .3s}
 .menu-socials a:hover{opacity:1}
 .menu-meta{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.05em;opacity:.55;text-align:right}
-.hero{position:relative;min-height:100svh;padding-top:var(--header-h);display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
-.hero-stage{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero{position:relative;min-height:100svh;padding-top:var(--header-h);display:flex;flex-direction:column;border-bottom:1px solid var(--line);perspective:1000px}
+.hero-stage{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden;transform-style:preserve-3d}
 .hero-media{
 position:absolute;top:50%;left:50%;width:78vw;height:62vh;max-width:1400px;
 transform:translate(-50%,-50%);
@@ -173,8 +173,8 @@ overflow:hidden;z-index:1;will-change:clip-path;
 }
 .hero-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.32);will-change:transform}
 .hero-media::after{content:'';position:absolute;inset:0;background:var(--ink);opacity:.18;mix-blend-mode:multiply}
-.hero-copy{position:relative;z-index:2;mix-blend-mode:difference;color:#fff;pointer-events:none;padding-inline:clamp(1.25rem,3vw,3rem)}
-.hero-line{overflow:hidden}
+.hero-copy{position:relative;z-index:2;mix-blend-mode:difference;color:#fff;pointer-events:none;padding-inline:clamp(1.25rem,3vw,3rem);transform-style:preserve-3d}
+.hero-line{overflow:hidden;transform-style:preserve-3d}
 .hero-line:nth-child(2){text-align:right}
 @media (max-width:760px){
 .hero-copy{mix-blend-mode:normal;color:var(--ink)}
@@ -196,17 +196,17 @@ display:flex;align-items:center;gap:1.4rem;padding-inline:1.4rem;
 font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:clamp(1.05rem,1.8vw,1.7rem);letter-spacing:-.01em;white-space:nowrap;
 }
 .marquee-strip .marquee-item i{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
-.stats{border-bottom:1px solid var(--line)}
+.stats{border-bottom:1px solid var(--line);perspective:1200px}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
-.stat{padding:clamp(2.2rem,5vw,4rem) clamp(1.25rem,3vw,2.4rem);border-right:1px solid var(--line)}
+.stat{padding:clamp(2.2rem,5vw,4rem) clamp(1.25rem,3vw,2.4rem);border-right:1px solid var(--line);transform-style:preserve-3d}
 .stat:last-child{border-right:0}
 .stat-num{font-family:var(--f-display);font-weight:800;font-size:clamp(2.6rem,5.6vw,5rem);letter-spacing:-.03em;display:flex;align-items:baseline;gap:.15em}
 .stat-num .unit{font-size:.42em;font-weight:700}
 .stat-label{margin-top:.9rem;font-family:var(--f-mono);font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-70);max-width:16em}
 @media (max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:0}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}}
 @media (max-width:480px){.stats-grid{grid-template-columns:1fr}.stat{border-right:0!important;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}}
-.manifesto{min-height:110vh;display:flex;align-items:center;background:var(--ink);color:var(--bg);border-bottom:1px solid var(--line);padding-block:clamp(4rem,10vh,7rem)}
-.manifesto-inner{width:100%;padding-inline:clamp(1.25rem,4vw,3.5rem)}
+.manifesto{min-height:110vh;display:flex;align-items:center;background:var(--ink);color:var(--bg);border-bottom:1px solid var(--line);padding-block:clamp(4rem,10vh,7rem);perspective:1200px}
+.manifesto-inner{width:100%;padding-inline:clamp(1.25rem,4vw,3.5rem);transform-style:preserve-3d}
 .manifesto-tag{color:var(--bg);opacity:.5;margin-bottom:1.6rem}
 .manifesto-text{width:100%}
 .manifesto-text .split-char{color:transparent;-webkit-text-stroke:1px rgba(246,245,240,.28)}
@@ -230,13 +230,13 @@ font-family:var(--f-display);font-weight:700;text-transform:uppercase;font-size:
 .p-left{width:100%;border-right:0;border-bottom:1px solid var(--line);min-height:auto;gap:2rem}
 .p-right{width:100%;aspect-ratio:4/3}
 }
-.method{border-bottom:1px solid var(--line);padding-block:clamp(3rem,8vw,6rem)}
+.method{border-bottom:1px solid var(--line);padding-block:clamp(3rem,8vw,6rem);perspective:1200px}
 .method-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3.5rem)}
 .method-head p{max-width:28em;margin-top:1rem;color:var(--ink-70)}
 .method-list{padding-inline:clamp(1.25rem,4vw,3.5rem);position:relative}
 .method-line{position:absolute;left:calc(clamp(1.25rem,4vw,3.5rem) + 27px);top:8px;bottom:8px;width:1px;background:var(--line)}
 .method-line-fill{position:absolute;top:0;left:0;width:100%;height:0%;background:var(--accent)}
-.method-step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:clamp(1.2rem,3vw,2.6rem);padding-block:clamp(1.6rem,4vw,2.6rem);border-top:1px solid var(--line)}
+.method-step{position:relative;display:grid;grid-template-columns:56px 1fr;gap:clamp(1.2rem,3vw,2.6rem);padding-block:clamp(1.6rem,4vw,2.6rem);border-top:1px solid var(--line);transform-style:preserve-3d}
 .method-step:last-child{border-bottom:1px solid var(--line)}
 .step-num{
 width:56px;height:56px;border-radius:50%;border:1px solid var(--line-strong);
@@ -249,12 +249,12 @@ background:var(--bg);position:relative;z-index:2;transition:background .4s ease,
 .step-tag{color:var(--ink-50)}
 .step-text{color:var(--ink-70);max-width:34em}
 @media (max-width:760px){.step-body{grid-template-columns:1fr}}
-.mentors{border-bottom:1px solid var(--line);position:relative}
+.mentors{border-bottom:1px solid var(--line);position:relative;perspective:1200px}
 .mentors-head{padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,4vw,3.5rem);border-bottom:1px solid var(--line)}
 .mentors-head p{max-width:26em;margin-top:1rem;color:var(--ink-70)}
 .mentor{
 border-top:1px solid var(--line);padding:clamp(1.6rem,3.5vw,2.6rem) clamp(1.25rem,4vw,3.5rem);
-display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;transition:background .35s ease;position:relative;
+display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;transition:background .35s ease;position:relative;transform-style:preserve-3d;
 }
 .mentors .mentor:last-child{border-bottom:1px solid var(--line)}
 .mentor:hover{background:var(--paper)}
@@ -270,22 +270,22 @@ overflow:hidden;will-change:transform,opacity;
 .reveal-frame img{width:100%;height:100%;object-fit:cover}
 body.show-reveal .reveal-frame{opacity:1;transform:translate(-50%,-50%) scale(1);transition:opacity .4s var(--ease-out-expo),transform .4s var(--ease-out-expo)}
 @media (max-width:900px){.reveal-frame{display:none}.mentor-role{text-align:left;width:100%}}
-.testimonials{border-bottom:1px solid var(--line);background:var(--paper);padding-block:clamp(3rem,7vw,5rem);overflow:hidden}
+.testimonials{border-bottom:1px solid var(--line);background:var(--paper);padding-block:clamp(3rem,7vw,5rem);overflow:hidden;perspective:1200px}
 .test-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3rem)}
 .test-track{display:flex;width:max-content;gap:1.5rem;padding-inline:clamp(1.25rem,4vw,3.5rem)}
 .test-card{
 width:min(420px,82vw);flex:none;background:var(--bg);border:1px solid var(--line);padding:clamp(1.6rem,3vw,2.4rem);
-display:flex;flex-direction:column;justify-content:space-between;gap:2rem;min-height:280px;
+display:flex;flex-direction:column;justify-content:space-between;gap:2rem;min-height:280px;transform-style:preserve-3d;
 }
 .test-quote{font-family:var(--f-display);font-weight:700;font-size:clamp(1.05rem,1.7vw,1.35rem);letter-spacing:-.01em;line-height:1.3}
 .test-who{display:flex;align-items:center;gap:1rem;font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-70)}
 .test-avatar{width:38px;height:38px;border-radius:50%;overflow:hidden;flex:none}
 .test-avatar img{width:100%;height:100%;object-fit:cover}
-.faq{border-bottom:1px solid var(--line);padding-block:clamp(3rem,7vw,5.5rem)}
+.faq{border-bottom:1px solid var(--line);padding-block:clamp(3rem,7vw,5.5rem);perspective:1200px}
 .faq-head{padding-inline:clamp(1.25rem,4vw,3.5rem);margin-bottom:clamp(2rem,5vw,3rem)}
 .faq-head p{max-width:26em;margin-top:1rem;color:var(--ink-70)}
 .faq-list{padding-inline:clamp(1.25rem,4vw,3.5rem)}
-.faq-item{border-top:1px solid var(--line)}
+.faq-item{border-top:1px solid var(--line);transform-style:preserve-3d}
 .faq-list .faq-item:last-child{border-bottom:1px solid var(--line)}
 .faq-q{
 width:100%;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;
@@ -299,7 +299,7 @@ padding-block:clamp(1.4rem,3vw,1.9rem);text-align:left;
 .faq-item.is-open .faq-icon::after{transform:translate(-50%,-50%) rotate(90deg) scale(0)}
 .faq-a{height:0;overflow:hidden}
 .faq-a-inner{padding-bottom:clamp(1.4rem,3vw,2rem);max-width:44em;color:var(--ink-70)}
-.cta{background:var(--ink);color:var(--bg);border-bottom:1px solid rgba(246,245,240,.15)}
+.cta{background:var(--ink);color:var(--bg);border-bottom:1px solid rgba(246,245,240,.15);perspective:1200px}
 .cta-grid{display:grid;grid-template-columns:1.3fr 1fr}
 .cta-main{padding:clamp(2.5rem,6vw,5rem) clamp(1.25rem,4vw,3.5rem);border-right:1px solid rgba(246,245,240,.15);display:flex;flex-direction:column;justify-content:space-between;gap:3rem}
 .cta-main .btn-fill{background:var(--accent);border-color:var(--accent)}
@@ -313,9 +313,9 @@ padding-block:clamp(1.4rem,3vw,1.9rem);text-align:left;
 .newsletter button{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;flex:none}
 .newsletter-msg{margin-top:.8rem;font-family:var(--f-mono);font-size:.78rem;color:var(--accent);height:1em}
 @media (max-width:900px){.cta-grid{grid-template-columns:1fr}.cta-main{border-right:0;border-bottom:1px solid rgba(246,245,240,.15)}}
-.footer{background:var(--ink);color:var(--bg)}
+.footer{background:var(--ink);color:var(--bg);perspective:1200px}
 .footer-links{display:grid;grid-template-columns:repeat(4,1fr)}
-.footer-col{padding:clamp(1.8rem,3.5vw,2.6rem);border-right:1px solid rgba(246,245,240,.15)}
+.footer-col{padding:clamp(1.8rem,3.5vw,2.6rem);border-right:1px solid rgba(246,245,240,.15);transform-style:preserve-3d}
 .footer-col:last-child{border-right:0}
 .footer-col h4{opacity:.5;margin-bottom:1rem}
 .footer-col a{display:block;padding-block:.4rem;font-family:var(--f-body);opacity:.85;transition:opacity .3s}
@@ -323,12 +323,14 @@ padding-block:clamp(1.4rem,3vw,1.9rem);text-align:left;
 @media (max-width:900px){.footer-links{grid-template-columns:repeat(2,1fr)}.footer-col:nth-child(2){border-right:0}.footer-col:nth-child(1),.footer-col:nth-child(2){border-bottom:1px solid rgba(246,245,240,.15)}}
 @media (max-width:480px){.footer-links{grid-template-columns:1fr}.footer-col{border-right:0!important;border-bottom:1px solid rgba(246,245,240,.15)}}
 .footer-word{padding-top:clamp(3vw,6vh,6vw);text-align:center;overflow:hidden;border-top:1px solid rgba(246,245,240,.15)}
-.footer-word .t-display{font-size:clamp(4rem,19vw,17rem);line-height:.76;letter-spacing:-.045em}
+.footer-word .t-display{font-size:clamp(4rem,17vw,17rem);line-height:.76;letter-spacing:-.045em}
 .footer-word .split-char{display:inline-block;transform:translateY(102%);will-change:transform}
 .footer-bar{display:flex;justify-content:space-between;padding:1.4rem clamp(1.25rem,4vw,3.5rem);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;opacity:.68;flex-wrap:wrap;gap:.6rem}
+.gs-crazy-reveal { visibility: hidden; }
 @media (prefers-reduced-motion:reduce){
 *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
+main{width:100%;overflow-x:hidden}
 </style>
 </head>
 <body>
@@ -390,7 +392,7 @@ awaiting assets
 <main id="main">
 <section class="hero">
 <div class="hero-stage">
-<div class="hero-media" id="hero-media">
+<div class="hero-media gs-crazy-reveal" id="hero-media">
 <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" srcset="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=900&amp;auto=format&amp;fit=crop 900w,https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=1600&amp;auto=format&amp;fit=crop 1600w,https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=2200&amp;auto=format&amp;fit=crop 2200w" sizes="80vw" alt="Brutalist concrete architecture bathed in harsh light" id="hero-img" fetchpriority="high">
 </div>
 <h1 class="hero-copy t-display text-cinema">
@@ -400,23 +402,23 @@ awaiting assets
 </h1>
 </div>
 <div class="hero-foot">
-<div class="hero-foot-cell">
+<div class="hero-foot-cell gs-crazy-reveal">
 <span class="t-mono">Based in cyberspace<br>Open to everyone, everywhere</span>
 </div>
-<div class="hero-foot-cell">
+<div class="hero-foot-cell gs-crazy-reveal">
 <a href="#programs" class="scroll-cue hover-target" data-cursor="SCROLL">
 <span class="t-mono scramble" data-text="SCROLL TO EXPLORE">SCROLL TO EXPLORE</span>
 <span class="scroll-cue-line" aria-hidden="true"></span>
 </a>
 </div>
-<div class="hero-foot-cell">
+<div class="hero-foot-cell gs-crazy-reveal btn-crazy-wrap">
 <a href="#apply" class="btn-circle hover-target" data-cursor="APPLY">
 <span class="btn-circle-label">Apply<br>2025</span>
 </a>
 </div>
 </div>
 </section>
-<section class="marquee-strip" aria-label="Alumni hired at">
+<section class="marquee-strip gs-crazy-reveal" aria-label="Alumni hired at">
 <div class="marquee-track" id="marquee-track">
 <div class="marquee-item"><i></i>Alumni hired at</div>
 <div class="marquee-item">Media.Monks</div>
@@ -429,28 +431,28 @@ awaiting assets
 </section>
 <section class="stats">
 <div class="stats-grid">
-<div class="stat">
-<div class="stat-num"><span class="gs-count" data-count="1240">0</span><span class="unit">+</span></div>
-<div class="stat-label">Graduates working in digital product &amp; motion studios</div>
+<div class="stat gs-crazy-container">
+<div class="stat-num gs-crazy-text"><span class="gs-count" data-count="1240">0</span><span class="unit">+</span></div>
+<div class="stat-label gs-crazy-text">Graduates working in digital product &amp; motion studios</div>
 </div>
-<div class="stat">
-<div class="stat-num"><span class="gs-count" data-count="94">0</span><span class="unit">%</span></div>
-<div class="stat-label">Hired or freelancing within six months of graduating</div>
+<div class="stat gs-crazy-container">
+<div class="stat-num gs-crazy-text"><span class="gs-count" data-count="94">0</span><span class="unit">%</span></div>
+<div class="stat-label gs-crazy-text">Hired or freelancing within six months of graduating</div>
 </div>
-<div class="stat">
-<div class="stat-num"><span class="gs-count" data-count="42">0</span><span class="unit">+</span></div>
-<div class="stat-label">Countries our cohorts have shipped work from</div>
+<div class="stat gs-crazy-container">
+<div class="stat-num gs-crazy-text"><span class="gs-count" data-count="42">0</span><span class="unit">+</span></div>
+<div class="stat-label gs-crazy-text">Countries our cohorts have shipped work from</div>
 </div>
-<div class="stat">
-<div class="stat-num"><span class="gs-count" data-count="4">0</span><span class="unit">.9</span></div>
-<div class="stat-label">Average studio rating across nine graduating cohorts</div>
+<div class="stat gs-crazy-container">
+<div class="stat-num gs-crazy-text"><span class="gs-count" data-count="4">0</span><span class="unit">.9</span></div>
+<div class="stat-label gs-crazy-text">Average studio rating across nine graduating cohorts</div>
 </div>
 </div>
 </section>
 <section class="manifesto">
 <div class="manifesto-inner">
-<p class="t-mono manifesto-tag">// Manifesto</p>
-<h2 class="t-display text-xl manifesto-text gs-fill">
+<p class="t-mono manifesto-tag gs-crazy-text">// Manifesto</p>
+<h2 class="t-display text-xl manifesto-text gs-fill gs-crazy-text">
 Traditional education is slow, generic, and built for a web that stopped existing a decade ago. The internet rewards the bold, the fast, and the unreasonably detailed. We built NEXUS to train the people who will build what comes next.
 </h2>
 </div>
@@ -458,77 +460,77 @@ Traditional education is slow, generic, and built for a web that stopped existin
 <section id="programs" class="programs-wrapper">
 <div class="programs-head">
 <div>
-<p class="eyebrow">Curriculum</p>
-<h2 class="t-display text-lg" style="margin-top:.6rem">Four studios.<br>One craft.</h2>
+<p class="eyebrow gs-crazy-text">Curriculum</p>
+<h2 class="t-display text-lg gs-crazy-text" style="margin-top:.6rem">Four studios.<br>One craft.</h2>
 </div>
-<p>Every studio runs for a fixed number of weeks, ends in a shipped project, and is graded by working practitioners, not a rubric.</p>
+<p class="gs-crazy-text">Every studio runs for a fixed number of weeks, ends in a shipped project, and is graded by working practitioners, not a rubric.</p>
 </div>
 <div class="h-track" id="h-track">
 <article class="h-panel">
 <div class="p-left">
-<div class="top-row">
+<div class="top-row gs-h-text">
 <span class="t-mono">Program // 01</span>
 <span class="t-mono">12 weeks</span>
 </div>
-<div>
+<div class="gs-h-text">
 <div class="p-num">01</div>
 <h3 class="t-display text-lg p-title">Editorial<br>Frontend</h3>
 <p class="t-body p-desc">Grid systems, fluid type, and semantic structure. You'll build layouts that belong in a magazine, not a template gallery.</p>
 </div>
-<div class="t-mono p-stack">Stack: HTML, CSS, Sass, TypeScript</div>
+<div class="t-mono p-stack gs-h-text">Stack: HTML, CSS, Sass, TypeScript</div>
 </div>
-<div class="p-right hover-target" data-cursor="VIEW">
+<div class="p-right hover-target gs-h-img" data-cursor="VIEW">
 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Close-up of an editorial print layout" loading="lazy">
 </div>
 </article>
 <article class="h-panel">
 <div class="p-left">
-<div class="top-row">
+<div class="top-row gs-h-text">
 <span class="t-mono">Program // 02</span>
 <span class="t-mono">10 weeks</span>
 </div>
-<div>
+<div class="gs-h-text">
 <div class="p-num">02</div>
 <h3 class="t-display text-lg p-title">Motion &amp;<br>Physics</h3>
 <p class="t-body p-desc">Breathe life into the DOM. Timelines, scroll-driven typography, and spring-based micro interactions that feel inevitable.</p>
 </div>
-<div class="t-mono p-stack">Stack: GSAP, Lenis, Motion One</div>
+<div class="t-mono p-stack gs-h-text">Stack: GSAP, Lenis, Motion One</div>
 </div>
-<div class="p-right hover-target" data-cursor="VIEW">
+<div class="p-right hover-target gs-h-img" data-cursor="VIEW">
 <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Long exposure light trails suggesting motion" loading="lazy">
 </div>
 </article>
 <article class="h-panel">
 <div class="p-left">
-<div class="top-row">
+<div class="top-row gs-h-text">
 <span class="t-mono">Program // 03</span>
 <span class="t-mono">14 weeks</span>
 </div>
-<div>
+<div class="gs-h-text">
 <div class="p-num">03</div>
 <h3 class="t-display text-lg p-title">WebGL &amp;<br>Shaders</h3>
 <p class="t-body p-desc">The deep end. Procedural generation, fragment shaders, and interactive three-dimensional environments that run at sixty frames a second.</p>
 </div>
-<div class="t-mono p-stack">Stack: Three.js, GLSL, React Three Fiber</div>
+<div class="t-mono p-stack gs-h-text">Stack: Three.js, GLSL, React Three Fiber</div>
 </div>
-<div class="p-right hover-target" data-cursor="VIEW">
-<img src="https://images.unsplash.com/photo-1633447617297-9c8c5e2482c5?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Abstract iridescent digital render" loading="lazy">
+<div class="p-right hover-target gs-h-img" data-cursor="VIEW">
+<img src="https://i.ytimg.com/vi/9dPPDf3ZBBI/maxresdefault.jpg" alt="Abstract iridescent digital render" loading="lazy">
 </div>
 </article>
 <article class="h-panel">
 <div class="p-left">
-<div class="top-row">
+<div class="top-row gs-h-text">
 <span class="t-mono">Program // 04</span>
 <span class="t-mono">8 weeks</span>
 </div>
-<div>
+<div class="gs-h-text">
 <div class="p-num">04</div>
 <h3 class="t-display text-lg p-title">Systems &amp;<br>Craft</h3>
 <p class="t-body p-desc">Design tokens, component architecture, accessibility, and performance budgets. The unglamorous work that makes everything else hold up.</p>
 </div>
-<div class="t-mono p-stack">Stack: Figma, Storybook, Lighthouse</div>
+<div class="t-mono p-stack gs-h-text">Stack: Figma, Storybook, Lighthouse</div>
 </div>
-<div class="p-right hover-target" data-cursor="VIEW">
+<div class="p-right hover-target gs-h-img" data-cursor="VIEW">
 <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Neatly organised grid of design tokens on a wall" loading="lazy">
 </div>
 </article>
@@ -536,36 +538,36 @@ Traditional education is slow, generic, and built for a web that stopped existin
 </section>
 <section id="method" class="method">
 <div class="method-head">
-<p class="eyebrow">Method</p>
-<h2 class="t-display text-lg" style="margin-top:.6rem">How a cohort<br>actually runs.</h2>
-<p>No lectures longer than twenty minutes. No busywork. Four repeating phases, every single week.</p>
+<p class="eyebrow gs-crazy-text">Method</p>
+<h2 class="t-display text-lg gs-crazy-text" style="margin-top:.6rem">How a cohort<br>actually runs.</h2>
+<p class="gs-crazy-text">No lectures longer than twenty minutes. No busywork. Four repeating phases, every single week.</p>
 </div>
 <div class="method-list" id="method-list">
 <div class="method-line" aria-hidden="true"><div class="method-line-fill" id="method-line-fill"></div></div>
-<div class="method-step">
+<div class="method-step gs-crazy-container">
 <div class="step-num">01</div>
-<div class="step-body">
+<div class="step-body gs-crazy-text">
 <div class="step-title"><h3 class="t-display text-md">Immerse</h3><span class="t-mono step-tag">Mon–Tue</span></div>
 <p class="step-text">You study a real, shipped product built by the studio you're learning that discipline from, and reverse-engineer why every decision was made.</p>
 </div>
 </div>
-<div class="method-step">
+<div class="method-step gs-crazy-container">
 <div class="step-num">02</div>
-<div class="step-body">
+<div class="step-body gs-crazy-text">
 <div class="step-title"><h3 class="t-display text-md">Build</h3><span class="t-mono step-tag">Wed–Thu</span></div>
 <p class="step-text">You build the same class of problem from a blank file, paired with a mentor who has shipped that exact thing at scale before.</p>
 </div>
 </div>
-<div class="method-step">
+<div class="method-step gs-crazy-container">
 <div class="step-num">03</div>
-<div class="step-body">
+<div class="step-body gs-crazy-text">
 <div class="step-title"><h3 class="t-display text-md">Critique</h3><span class="t-mono step-tag">Fri</span></div>
 <p class="step-text">Your work is reviewed live, on a projector, in front of your cohort. No feedback forms. Notes are blunt, specific, and public.</p>
 </div>
 </div>
-<div class="method-step">
+<div class="method-step gs-crazy-container">
 <div class="step-num">04</div>
-<div class="step-body">
+<div class="step-body gs-crazy-text">
 <div class="step-title"><h3 class="t-display text-md">Ship</h3><span class="t-mono step-tag">Ongoing</span></div>
 <p class="step-text">Every project goes live on a real domain with real users watching, because a portfolio piece nobody can visit teaches you nothing.</p>
 </div>
@@ -575,43 +577,43 @@ Traditional education is slow, generic, and built for a web that stopped existin
 <section id="mentors" class="mentors">
 <div class="reveal-frame" id="reveal-frame"><img src="" alt="" id="reveal-img"></div>
 <div class="mentors-head">
-<p class="eyebrow">Mentors</p>
-<h2 class="t-display text-lg" style="margin-top:.6rem">The architects.</h2>
-<p>Everyone teaching at NEXUS still ships client and product work. Nobody here teaches full time.</p>
+<p class="eyebrow gs-crazy-text">Mentors</p>
+<h2 class="t-display text-lg gs-crazy-text" style="margin-top:.6rem">The architects.</h2>
+<p class="gs-crazy-text">Everyone teaching at NEXUS still ships client and product work. Nobody here teaches full time.</p>
 </div>
-<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
-<div class="mentor-name">
+<div class="mentor hover-target gs-crazy-container" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name gs-crazy-text">
 <div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
 <h3 class="t-display text-md">Alex Chen</h3>
 </div>
-<span class="t-mono mentor-role">Creative developer, Media.Monks</span>
+<span class="t-mono mentor-role gs-crazy-text">Creative developer, Media.Monks</span>
 </div>
-<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
-<div class="mentor-name">
+<div class="mentor hover-target gs-crazy-container" data-img="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name gs-crazy-text">
 <div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
 <h3 class="t-display text-md">Sarah Jones</h3>
 </div>
-<span class="t-mono mentor-role">WebGL artist &amp; Awwwards jury</span>
+<span class="t-mono mentor-role gs-crazy-text">WebGL artist &amp; Awwwards jury</span>
 </div>
-<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
-<div class="mentor-name">
+<div class="mentor hover-target gs-crazy-container" data-img="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name gs-crazy-text">
 <div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
 <h3 class="t-display text-md">David Koch</h3>
 </div>
-<span class="t-mono mentor-role">Lead designer, Studio Freight</span>
+<span class="t-mono mentor-role gs-crazy-text">Lead designer, Studio Freight</span>
 </div>
-<div class="mentor hover-target" data-img="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
-<div class="mentor-name">
+<div class="mentor hover-target gs-crazy-container" data-img="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&amp;w=700&amp;auto=format&amp;fit=crop">
+<div class="mentor-name gs-crazy-text">
 <div class="mentor-thumb"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&amp;w=200&amp;auto=format&amp;fit=crop" alt="" loading="lazy"></div>
 <h3 class="t-display text-md">Priya Nair</h3>
 </div>
-<span class="t-mono mentor-role">Design systems lead, Linear</span>
+<span class="t-mono mentor-role gs-crazy-text">Design systems lead, Linear</span>
 </div>
 </section>
 <section class="testimonials" aria-label="Alumni testimonials">
 <div class="test-head">
-<p class="eyebrow">From the cohorts</p>
-<h2 class="t-display text-lg" style="margin-top:.6rem">Nobody asked us<br>to say this.</h2>
+<p class="eyebrow gs-crazy-text">From the cohorts</p>
+<h2 class="t-display text-lg gs-crazy-text" style="margin-top:.6rem">Nobody asked us<br>to say this.</h2>
 </div>
 <div class="test-track" id="test-track">
 <article class="test-card">
@@ -634,40 +636,40 @@ Traditional education is slow, generic, and built for a web that stopped existin
 </section>
 <section id="faq" class="faq">
 <div class="faq-head">
-<p class="eyebrow">Before you apply</p>
-<h2 class="t-display text-lg" style="margin-top:.6rem">Questions,<br>answered plainly.</h2>
+<p class="eyebrow gs-crazy-text">Before you apply</p>
+<h2 class="t-display text-lg gs-crazy-text" style="margin-top:.6rem">Questions,<br>answered plainly.</h2>
 </div>
 <div class="faq-list" id="faq-list">
-<div class="faq-item">
-<button class="faq-q" aria-expanded="false">
+<div class="faq-item gs-crazy-container">
+<button class="faq-q gs-crazy-text" aria-expanded="false">
 <span class="t-display">Do I need prior experience?</span>
 <span class="faq-icon" aria-hidden="true"></span>
 </button>
 <div class="faq-a"><div class="faq-a-inner">No. About half of every cohort has never written a line of code before day one. What matters is that you finish what you start.</div></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" aria-expanded="false">
+<div class="faq-item gs-crazy-container">
+<button class="faq-q gs-crazy-text" aria-expanded="false">
 <span class="t-display">Is this fully remote?</span>
 <span class="faq-icon" aria-hidden="true"></span>
 </button>
 <div class="faq-a"><div class="faq-a-inner">Yes. Every studio, critique, and mentor session runs live online, and every session is recorded for your own timezone.</div></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" aria-expanded="false">
+<div class="faq-item gs-crazy-container">
+<button class="faq-q gs-crazy-text" aria-expanded="false">
 <span class="t-display">What's the weekly time commitment?</span>
 <span class="faq-icon" aria-hidden="true"></span>
 </button>
 <div class="faq-a"><div class="faq-a-inner">Plan for 25 to 30 hours a week. This is intentionally closer to a first job than a hobby course.</div></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" aria-expanded="false">
+<div class="faq-item gs-crazy-container">
+<button class="faq-q gs-crazy-text" aria-expanded="false">
 <span class="t-display">Can I take more than one studio?</span>
 <span class="faq-icon" aria-hidden="true"></span>
 </button>
 <div class="faq-a"><div class="faq-a-inner">Most graduates do. Studios are sequenced so Editorial Frontend and Motion &amp; Physics both feed directly into WebGL &amp; Shaders.</div></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" aria-expanded="false">
+<div class="faq-item gs-crazy-container">
+<button class="faq-q gs-crazy-text" aria-expanded="false">
 <span class="t-display">What happens if I'm not hired?</span>
 <span class="faq-icon" aria-hidden="true"></span>
 </button>
@@ -678,13 +680,15 @@ Traditional education is slow, generic, and built for a web that stopped existin
 <section id="apply" class="cta">
 <div class="cta-grid">
 <div class="cta-main">
-<h2 class="t-display text-lg">Ready to<br>break the internet?</h2>
+<h2 class="t-display text-lg gs-crazy-text">Ready to<br>break the internet?</h2>
+<div class="btn-crazy-wrap">
 <a href="mailto:hello@nexus.academy" class="btn btn-fill hover-target" style="align-self:flex-start"><span>Start your application</span></a>
+</div>
 </div>
 <div class="cta-side">
 <div>
-<p class="t-mono" style="opacity:.5">Newsletter</p>
-<form id="newsletter-form" novalidate>
+<p class="t-mono gs-crazy-text" style="opacity:.5">Newsletter</p>
+<form id="newsletter-form" class="gs-crazy-container" novalidate>
 <div class="newsletter">
 <input type="email" placeholder="Enter your email" aria-label="Email address" required>
 <button type="submit" class="hover-target">Join</button>
@@ -693,8 +697,8 @@ Traditional education is slow, generic, and built for a web that stopped existin
 <p class="newsletter-msg" id="newsletter-msg" role="status"></p>
 </div>
 <div>
-<p class="t-mono" style="opacity:.5">Studio</p>
-<p style="margin-top:.6rem">No campus, no commute.<br>Cohorts run live across every timezone.</p>
+<p class="t-mono gs-crazy-text" style="opacity:.5">Studio</p>
+<p class="gs-crazy-text" style="margin-top:.6rem">No campus, no commute.<br>Cohorts run live across every timezone.</p>
 </div>
 </div>
 </div>
@@ -702,38 +706,38 @@ Traditional education is slow, generic, and built for a web that stopped existin
 </main>
 <footer class="footer">
 <div class="footer-links">
-<div class="footer-col">
-<h4 class="t-mono">Programs</h4>
-<a href="#programs" class="hover-target">Editorial Frontend</a>
-<a href="#programs" class="hover-target">Motion &amp; Physics</a>
-<a href="#programs" class="hover-target">WebGL &amp; Shaders</a>
-<a href="#programs" class="hover-target">Systems &amp; Craft</a>
+<div class="footer-col gs-crazy-container">
+<h4 class="t-mono gs-crazy-text">Programs</h4>
+<a href="#programs" class="hover-target gs-crazy-text">Editorial Frontend</a>
+<a href="#programs" class="hover-target gs-crazy-text">Motion &amp; Physics</a>
+<a href="#programs" class="hover-target gs-crazy-text">WebGL &amp; Shaders</a>
+<a href="#programs" class="hover-target gs-crazy-text">Systems &amp; Craft</a>
 </div>
-<div class="footer-col">
-<h4 class="t-mono">Academy</h4>
-<a href="#method" class="hover-target">Method</a>
-<a href="#mentors" class="hover-target">Mentors</a>
-<a href="#faq" class="hover-target">FAQ</a>
-<a href="#apply" class="hover-target">Apply</a>
+<div class="footer-col gs-crazy-container">
+<h4 class="t-mono gs-crazy-text">Academy</h4>
+<a href="#method" class="hover-target gs-crazy-text">Method</a>
+<a href="#mentors" class="hover-target gs-crazy-text">Mentors</a>
+<a href="#faq" class="hover-target gs-crazy-text">FAQ</a>
+<a href="#apply" class="hover-target gs-crazy-text">Apply</a>
 </div>
-<div class="footer-col">
-<h4 class="t-mono">Connect</h4>
-<a href="#" class="hover-target">Instagram</a>
-<a href="#" class="hover-target">X</a>
-<a href="#" class="hover-target">Discord</a>
+<div class="footer-col gs-crazy-container">
+<h4 class="t-mono gs-crazy-text">Connect</h4>
+<a href="#" class="hover-target gs-crazy-text">Instagram</a>
+<a href="#" class="hover-target gs-crazy-text">X</a>
+<a href="#" class="hover-target gs-crazy-text">Discord</a>
 </div>
-<div class="footer-col">
-<h4 class="t-mono">Contact</h4>
-<a href="mailto:hello@nexus.academy" class="hover-target">hello@nexus.academy</a>
-<span class="t-mono" style="opacity:.6;display:block;padding-block:.4rem">Remote · Worldwide</span>
+<div class="footer-col gs-crazy-container">
+<h4 class="t-mono gs-crazy-text">Contact</h4>
+<a href="mailto:hello@nexus.academy" class="hover-target gs-crazy-text">hello@nexus.academy</a>
+<span class="t-mono gs-crazy-text" style="opacity:.6;display:block;padding-block:.4rem">Remote · Worldwide</span>
 </div>
 </div>
 <div class="footer-word">
 <div class="t-display gs-footer">NEXUS</div>
 </div>
 <div class="footer-bar">
-<span>© <span id="year"></span> NEXUS Academy</span>
-<span>Built for the bold, the fast, and the unconventional</span>
+<span class="gs-crazy-text">© <span id="year"></span> NEXUS Academy</span>
+<span class="gs-crazy-text">Built for the bold, the fast, and the unconventional</span>
 </div>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -864,6 +868,9 @@ document.documentElement.classList.remove('is-loading');
 if(gsapReady){
 gsap.to(preloader,{
 yPercent:-100,
+rotationX:45,
+scale:0.8,
+opacity:0,
 duration:1.1,
 ease:'power4.inOut',
 onComplete:function(){
@@ -885,13 +892,11 @@ img.addEventListener('load',onImg);
 img.addEventListener('error',onImg);
 }
 });
-
 function onImg(){
 loaded++;
 setPct(Math.min(96,(loaded/total)*100));
 if(loaded>=total)markDone();
 }
-
 setPct(Math.min(96,(loaded/total)*100));
 if(loaded>=total)setTimeout(markDone,400);
 
@@ -899,16 +904,13 @@ var tick=setInterval(function(){
 if(done){clearInterval(tick);return}
 setPct(Math.min(92,displayed+Math.random()*9));
 },110);
-
 setTimeout(function(){clearInterval(tick);markDone()},2600);
 }
 
 function initApp(){
 initScramblers();
-if(!gsapReady){
-console.error('Animation libraries failed to load.');
-return;
-}
+if(!gsapReady) return;
+
 try{
 var lenis=null;
 if(typeof Lenis!=='undefined'){
@@ -963,27 +965,38 @@ window.addEventListener('keydown',function(e){
 if(e.key==='Escape')closeMenu();
 });
 
+gsap.set('.gs-crazy-reveal', { visibility: 'visible' });
+
 var heroLines=document.querySelectorAll('.hero-line');
 heroLines.forEach(splitChars);
 splitChars(document.querySelector('.gs-fill'));
 splitChars(document.querySelector('.gs-footer'));
 
 var heroTl=gsap.timeline({delay:.1});
-heroTl.to('#hero-media',{
+heroTl.fromTo('#hero-media',{
+clipPath:'inset(50% 50% 50% 50% round 4px)',
+scale:0.2,
+rotationZ:45
+},{
 clipPath:'inset(0% 0% 0% 0% round 4px)',
+scale:1,
+rotationZ:0,
 duration:1.6,
 ease:'power4.inOut'
 },0)
-.to('#hero-img',{scale:1,duration:1.8,ease:'power4.inOut'},0)
+.fromTo('#hero-img',{scale:2,filter:'saturate(0)'},{scale:1,filter:'saturate(1)',duration:1.8,ease:'power4.inOut'},0)
 .fromTo('.hero-line .split-char',
-{yPercent:110},
-{yPercent:0,duration:1,stagger:.02,ease:'power4.out'},.5
+{yPercent:150,opacity:0,rotationX:-90,scale:0.5},
+{yPercent:0,opacity:1,rotationX:0,scale:1,duration:1.2,stagger:.03,ease:'back.out(1.5)'},.5
+)
+.fromTo('.logo, .nav-link, .head-cta, .hamburger',
+{y:-100,opacity:0,rotationX:90},
+{y:0,opacity:1,rotationX:0,duration:1,stagger:0.05,ease:'expo.out'},.8
 );
 
-gsap.to('#hero-img',{
-yPercent:14,
-ease:'none',
-scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}
+gsap.to('.hero-stage',{
+opacity:0,scale:0.8,rotationX:20,y:-100,z:-200,
+scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}
 });
 
 var marqueeTrack=document.getElementById('marquee-track');
@@ -1001,6 +1014,55 @@ marqueeTrack.parentElement.addEventListener('mouseenter',function(){mqTween.time
 marqueeTrack.parentElement.addEventListener('mouseleave',function(){mqTween.timeScale(1)});
 }
 }
+
+gsap.fromTo('.marquee-strip',
+{opacity:0,rotationX:-90,scale:0.8,transformOrigin:"50% 50%"},
+{opacity:1,rotationX:0,scale:1,duration:1.5,ease:"expo.out",scrollTrigger:{trigger:".marquee-strip",start:"top 95%",toggleActions:"play none none reverse"}}
+);
+
+gsap.fromTo('.manifesto-text',
+{opacity:0,scale:0.5,rotationX:60,y:100},
+{opacity:1,scale:1,rotationX:0,y:0,duration:1.5,ease:"expo.out",scrollTrigger:{trigger:'.manifesto',start:"top 90%",toggleActions:"play none none reverse"}}
+);
+
+gsap.utils.toArray('.gs-crazy-container').forEach(function(el,i){
+var rx=i%2===0?30:-30;
+var ry=i%2===0?-30:30;
+gsap.fromTo(el,
+{opacity:0,rotationX:rx,rotationY:ry,z:-200,scale:0.8,transformOrigin:"50% 50%"},
+{opacity:1,rotationX:0,rotationY:0,z:0,scale:1,duration:1.2,ease:"expo.out",scrollTrigger:{trigger:el,start:"top 90%",toggleActions:"play none none reverse"}}
+);
+});
+
+gsap.utils.toArray('.gs-crazy-text').forEach(function(el,i){
+gsap.fromTo(el,
+{opacity:0,y:60,x:(i%2===0?30:-30),skewX:15,skewY:5,scale:0.9},
+{opacity:1,y:0,x:0,skewX:0,skewY:0,scale:1,duration:1.2,ease:"back.out(1.4)",scrollTrigger:{trigger:el,start:"top 95%",toggleActions:"play none none reverse"}}
+);
+});
+
+gsap.utils.toArray('.btn-crazy-wrap').forEach(function(el){
+gsap.fromTo(el,
+{opacity:0,scale:0,rotationX:180,rotationY:180},
+{opacity:1,scale:1,rotationX:0,rotationY:0,duration:1.5,ease:"elastic.out(1, 0.4)",scrollTrigger:{trigger:el,start:"top 95%",toggleActions:"play none none reverse"}}
+);
+});
+
+gsap.fromTo('.newsletter',
+{opacity:0,x:100,scale:0.5,rotationY:-90},
+{opacity:1,x:0,scale:1,rotationY:0,duration:1.2,ease:"back.out(1.2)",scrollTrigger:{trigger:".newsletter",start:"top 95%",toggleActions:"play none none reverse"}}
+);
+
+gsap.utils.toArray('.hero-foot-cell').forEach(function(el,i){
+gsap.fromTo(el,
+{opacity:0,y:100,rotationX:-90},
+{opacity:1,y:0,rotationX:0,duration:1.2,delay:1.2+(i*0.15),ease:"expo.out",clearProps:"all"}
+);
+gsap.to(el,{
+opacity:0,y:-50,scale:0.8,rotationX:45,
+scrollTrigger:{trigger:".hero-foot",start:"top top",end:"bottom top",scrub:true}
+});
+});
 
 document.querySelectorAll('.gs-count').forEach(function(el){
 var target=parseFloat(el.getAttribute('data-count'));
@@ -1057,12 +1119,25 @@ scrub:1,
 end:function(){return '+='+track.offsetWidth}
 }
 });
-panels.forEach(function(panel){
-var img=panel.querySelector('.p-right img');
+panels.forEach(function(panel, index){
+if(index > 0){
+gsap.fromTo(panel.querySelectorAll('.gs-h-text'),
+{opacity:0,z:-300,rotationY:60,x:150,scale:0.5},
+{opacity:1,z:0,rotationY:0,x:0,scale:1,stagger:0.1,duration:1.2,ease:"back.out(1.2)",scrollTrigger:{trigger:panel,containerAnimation:scrollTween,start:"left 80%",toggleActions:"play none none reverse"}}
+);
+var img=panel.querySelector('.gs-h-img');
 if(img){
-gsap.to(img,{
+gsap.fromTo(img,
+{opacity:0,scale:0.2,rotationZ:-45,clipPath:"circle(0% at 50% 50%)"},
+{opacity:1,scale:1,rotationZ:0,clipPath:"circle(100% at 50% 50%)",duration:1.5,ease:"power4.out",scrollTrigger:{trigger:panel,containerAnimation:scrollTween,start:"left 80%",toggleActions:"play none none reverse"}}
+);
+}
+}
+var internalImg=panel.querySelector('.p-right img');
+if(internalImg){
+gsap.to(internalImg,{
 scale:1,
-xPercent:6,
+xPercent:15,
 ease:'none',
 scrollTrigger:{
 trigger:panel,
@@ -1075,6 +1150,23 @@ scrub:true
 }
 });
 }
+return function(){};
+});
+
+mm.add('(max-width:1024px)',function(){
+gsap.utils.toArray('.h-panel').forEach(function(panel){
+gsap.fromTo(panel.querySelectorAll('.gs-h-text'),
+{opacity:0,z:-300,rotationY:60,y:50,scale:0.5},
+{opacity:1,z:0,rotationY:0,y:0,scale:1,stagger:0.1,duration:1.2,ease:"back.out(1.2)",scrollTrigger:{trigger:panel,start:"top 90%",toggleActions:"play none none reverse"}}
+);
+var img=panel.querySelector('.gs-h-img');
+if(img){
+gsap.fromTo(img,
+{opacity:0,scale:0.5,rotationZ:-20,clipPath:"circle(0% at 50% 50%)"},
+{opacity:1,scale:1,rotationZ:0,clipPath:"circle(100% at 50% 50%)",duration:1.5,ease:"power4.inOut",scrollTrigger:{trigger:panel,start:"top 90%",toggleActions:"play none none reverse"}}
+);
+}
+});
 return function(){};
 });
 
@@ -1125,7 +1217,7 @@ var testTrack=document.getElementById('test-track');
 if(testTrack&&!isTouch){
 var testWidth=testTrack.scrollWidth-testTrack.parentElement.offsetWidth;
 if(testWidth>0){
-gsap.to(testTrack,{
+var testTween=gsap.to(testTrack,{
 x:-testWidth,
 ease:'none',
 scrollTrigger:{
@@ -1135,18 +1227,28 @@ end:'bottom top',
 scrub:1
 }
 });
+gsap.utils.toArray('.test-card').forEach(function(card){
+gsap.fromTo(card,
+{opacity:0,rotationY:45,scale:0.5,y:100},
+{opacity:1,rotationY:0,scale:1,y:0,duration:1.2,ease:"back.out(1.2)",scrollTrigger:{trigger:card,containerAnimation:testTween,start:"left 90%",toggleActions:"play none none reverse"}}
+);
+});
 }
+}else{
+gsap.utils.toArray('.test-card').forEach(function(card){
+gsap.fromTo(card,
+{opacity:0,rotationY:45,scale:0.5,y:50},
+{opacity:1,rotationY:0,scale:1,y:0,duration:1.2,ease:"back.out(1.2)",scrollTrigger:{trigger:card,start:"top 90%",toggleActions:"play none none reverse"}}
+);
+});
 }
 
 var footerChars=document.querySelectorAll('.gs-footer .split-char');
 if(footerChars.length){
-gsap.to(footerChars,{
-y:'0%',
-duration:1.4,
-stagger:.04,
-ease:'power4.out',
-scrollTrigger:{trigger:'.footer',start:'top 85%'}
-});
+gsap.fromTo(footerChars,
+{y:'102%',opacity:0,rotationX:90,scale:0.5},
+{y:'0%',opacity:1,rotationX:0,scale:1,duration:1.4,stagger:.04,ease:'back.out(1.2)',scrollTrigger:{trigger:'.footer',start:'top 90%',toggleActions:"play none none reverse"}}
+);
 }
 
 var newsletterForm=document.getElementById('newsletter-form');
@@ -1166,9 +1268,7 @@ initCursorSystem();
 document.body.classList.add('js-cursor');
 }
 
-}catch(err){
-console.error('Animation execution error:',err);
-}
+}catch(err){}
 }
 
 function initNoiseCanvas(){
